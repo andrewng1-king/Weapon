@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="WEAPON">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;700;900&family=Michroma&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;700;900&family=Michroma&family=Rajdhani:wght@400;500;600&family=Chakra+Petch:wght@500;600&display=swap" rel="stylesheet">
 <style>
   @font-face{
     font-family:'Anurati';
@@ -574,6 +574,43 @@ body{padding-bottom:calc(150px + env(safe-area-inset-bottom));}
 .sp-title{font-size:.82rem; color:#fff; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .sp-sub{font-size:.58rem; color:var(--accent); text-transform:uppercase; letter-spacing:1.5px; margin-top:2px;}
 .sp-play{width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.78rem; flex:0 0 auto;}
+<style id="v11">
+/* spotify embed restored */
+.idc-spotify iframe{width:100%; height:80px; border:0; border-radius:12px; display:block;}
+/* level number slim + centred */
+.lvlnum{font-family:'Rajdhani','Orbitron',sans-serif; font-weight:500; font-size:1.3rem; letter-spacing:1px; transform:translateY(-1px);}
+.av-emblem .lvlnum{font-family:'Rajdhani','Orbitron',sans-serif; font-weight:500; font-size:1.3rem;}
+/* log button: even faster + undo-on-hover */
+.logbtn .lb-fill{transition:clip-path .18s linear;}
+.logbtn .lb-rev{transition:clip-path .18s linear, opacity .18s ease;}
+.logbtn .lb-xfill{position:absolute; inset:0; z-index:1; background:#fff; clip-path:polygon(0 0,0 0,-16% 100%,0 100%); transition:clip-path .2s linear; pointer-events:none;}
+.logbtn .lb-undo{clip-path:polygon(0 0,0 0,-16% 100%,0 100%); transition:opacity .1s ease, clip-path .2s linear;}
+.logbtn.is-done:hover .lb-xfill{clip-path:polygon(0 0,116% 0,100% 100%,0 100%);}
+.logbtn.is-done:hover .lb-done{opacity:0;}
+.logbtn.is-done:hover .lb-undo{opacity:1; clip-path:polygon(0 0,116% 0,100% 100%,0 100%);}
+.logbtn.is-undo .lb-xfill{clip-path:polygon(0 0,116% 0,100% 100%,0 100%);}
+.logbtn.is-undo .lb-undo{clip-path:polygon(0 0,116% 0,100% 100%,0 100%);}
+/* nav clearance (more) */
+body{padding-bottom:calc(180px + env(safe-area-inset-bottom));}
+.tab main{padding-bottom:34px;}
+/* ID card: neutral scheme like other boxes */
+.idcard{background:var(--surface);}
+.idc-cover2.nofill{background:linear-gradient(120deg, rgba(255,255,255,.07), rgba(255,255,255,.015));}
+/* head layout: avatar + rank icon under it */
+.idc-headrow{align-items:center;}
+.idc-avwrap{display:flex; flex-direction:column; align-items:center; flex:0 0 auto;}
+.idc-rankico{width:34px; height:38px; margin-top:5px;}
+.idc-rankico svg{width:100%; height:100%; display:block;}
+.idc-namewrap{flex:1; min-width:0; align-self:center; padding-bottom:0;}
+/* 5) name font with proper case, no frame */
+.idc-name{font-family:'Chakra Petch','Kanit',sans-serif; font-weight:600; font-size:1.08rem; color:#fff; letter-spacing:.4px; text-transform:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+/* 4) bio bigger/brighter; stats smaller w/ number font */
+.idc-bio{font-size:.84rem; color:#dcd6d9; line-height:1.55; margin-top:11px;}
+.idc-stats2{margin-top:12px;}
+.idc-stats2 b{font-family:'Rajdhani','Orbitron',sans-serif; font-weight:600; font-size:1rem;}
+.idc-stats2 span{font-size:.5rem;}
+/* 8) follow button black */
+.idc-follow{background:#000; color:#fff; box-shadow:none; border:1px solid rgba(255,255,255,.18);}
 </style>
 </head>
 <body data-mode="strength">
@@ -581,7 +618,7 @@ body{padding-bottom:calc(150px + env(safe-area-inset-bottom));}
 <div class="bg-glow"></div>
 
 <header>
-  <button class="hdr-gear" id="gearBtn" onclick="openSettings()" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.1 5.1l2.1 2.1M16.8 16.8l2.1 2.1M18.9 5.1l-2.1 2.1M7.2 16.8l-2.1 2.1"/></svg></button>
+  <button class="hdr-gear" id="gearBtn" onclick="openSettings()" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   <div class="brand">WEAP<i>O</i>N</div>
   <div class="sub" id="headStats">Worldbreaker</div>
   <button class="mtoggle" id="modeToggle" onclick="toggleMode()" aria-label="Switch mode">
@@ -969,7 +1006,7 @@ function renderGroup(){
             <div class="val"><input type="number" step="1" inputmode="numeric" value="${v.reps}" onchange="setVal('${attr(ex.n)}','reps',this.value)"><span class="unit">reps · 3 sets</span></div>
             <button onclick="bump('${attr(ex.n)}','reps',1)">+</button>
           </div>
-          <button class="logbtn${todayN?' is-done':''}" id="log_${sid}" onclick="logTap('${attr(ex.n)}')" aria-label="Log set"><span class="lb-fill" aria-hidden="true"></span><span class="lb-base"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M12 6l6 6-6 6"></path></svg></span><span class="lb-rev" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M12 6l6 6-6 6"></path></svg></span><span class="lb-done" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="lb-undo" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span></button>
+          <button class="logbtn${todayN?' is-done':''}" id="log_${sid}" onclick="logTap('${attr(ex.n)}')" aria-label="Log set"><span class="lb-fill" aria-hidden="true"></span><span class="lb-xfill" aria-hidden="true"></span><span class="lb-base"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M12 6l6 6-6 6"></path></svg></span><span class="lb-rev" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M12 6l6 6-6 6"></path></svg></span><span class="lb-done" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="lb-undo" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span></button>
         </div>
         <div class="detail" id="detail_${sid}"></div>
       </div>`;
@@ -1372,21 +1409,11 @@ function saveSettings(){
   const w=parseFloat(document.getElementById('pfWeight').value); if(!isNaN(w)&&w>0&&w<400) db.bw=Math.round(w);
   save(); if(window.WeaponSync) WeaponSync.pushProfile(); renderIDCard(); const bw=document.getElementById('bwInput'); if(bw) bw.value=db.bw; closeSettings(); toast('Profile saved');
 }
-function spotifyStrip(link){
+function spotifyEmbed(link){
   if(!link) return '<div class="idc-empty">Add a Spotify track in settings</div>';
   const m=String(link).match(/track[\/:]([A-Za-z0-9]+)/);
   if(!m) return '<div class="idc-empty">Not a valid Spotify track link</div>';
-  const url='https://open.spotify.com/track/'+m[1];
-  return '<a class="sp-strip" href="'+url+'" target="_blank" rel="noopener"><div class="sp-art" id="spArt"></div><div class="sp-meta"><div class="sp-title" id="spTitle">Loading\u2026</div><div class="sp-sub">Spotify</div></div><span class="sp-play">\u25B6</span></a>';
-}
-function fillSpotify(link){
-  const m=String(link).match(/track[\/:]([A-Za-z0-9]+)/); if(!m) return;
-  const url='https://open.spotify.com/track/'+m[1];
-  fetch('https://open.spotify.com/oembed?url='+encodeURIComponent(url)).then(function(r){return r.json();}).then(function(d){
-    const t=document.getElementById('spTitle'); const a=document.getElementById('spArt');
-    if(t&&d&&d.title) t.textContent=d.title;
-    if(a&&d&&d.thumbnail_url) a.style.backgroundImage='url('+JSON.stringify(d.thumbnail_url)+')';
-  }).catch(function(){ const t=document.getElementById('spTitle'); if(t) t.textContent='Open in Spotify'; });
+  return '<iframe src="https://open.spotify.com/embed/track/'+m[1]+'" loading="lazy" allow="encrypted-media"></iframe>';
 }
 function renderIDCard(){
   const el=document.getElementById('idCard'); if(!el) return;
@@ -1399,20 +1426,19 @@ function renderIDCard(){
   const followers=p.followers||0, challenges=p.challenges||0;
   const av=p.photo?('<img src="'+p.photo+'" alt="">'):esc(initials);
   const cover=p.cover?(' style="background-image:url('+JSON.stringify(p.cover)+')"'):'';
+  const rankIco=emblemForLevel(li.lvl);
   el.innerHTML=
     '<div class="idc-cover2'+(p.cover?'':' nofill')+'"'+cover+'></div>'+
-    '<div class="idc-tag">WEAPON ID</div>'+
     '<div class="idc-body">'+
       '<div class="idc-headrow">'+
-        '<div class="idc-avatar"><div class="av-ring"></div><div class="av-ticks"></div><div class="av-img">'+av+'</div></div>'+
-        '<div class="idc-namewrap"><div class="idc-plate"><span class="idc-name">'+esc(name)+'</span></div><div class="idc-job">'+esc(job)+' · LV '+li.lvl+'</div></div>'+
+        '<div class="idc-avwrap"><div class="idc-avatar"><div class="av-ring"></div><div class="av-ticks"></div><div class="av-img">'+av+'</div></div><div class="idc-rankico">'+rankIco+'</div></div>'+
+        '<div class="idc-namewrap"><div class="idc-name">'+esc(name)+'</div></div>'+
         '<button class="idc-follow" type="button" onclick="toast(\'Following — coming soon\')">Follow</button>'+
       '</div>'+
-      '<div class="idc-stats2"><div><b>'+daysLifted+'</b><span>Days lifted</span></div><div><b>'+followers+'</b><span>Followers</span></div><div><b>'+challenges+'</b><span>Challenges</span></div></div>'+
       (p.bio?('<div class="idc-bio">'+esc(p.bio)+'</div>'):'')+
-      '<div class="idc-spotify" id="idcSpotify">'+spotifyStrip(p.spotify)+'</div>'+
+      '<div class="idc-stats2"><div><b>'+daysLifted+'</b><span>Days lifted</span></div><div><b>'+followers+'</b><span>Followers</span></div><div><b>'+challenges+'</b><span>Challenges</span></div></div>'+
+      '<div class="idc-spotify">'+spotifyEmbed(p.spotify)+'</div>'+
     '</div>';
-  if(p.spotify) fillSpotify(p.spotify);
 }
 
 /* ================= profile photos ================= */
