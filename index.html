@@ -436,7 +436,7 @@
 .logbtn{border-radius:0;}
 .logbtn .lb-fill{clip-path:polygon(0 0, 0 0, -16% 100%, 0 100%); transition:clip-path .7s linear;}
 .logbtn .lb-rev{clip-path:polygon(0 0, 0 0, -16% 100%, 0 100%); transition:clip-path .7s linear, opacity .3s ease;}
-.logbtn:not(.is-done):not(.locked):hover .lb-fill, .logbtn:not(.is-done):not(.locked):hover .lb-rev{clip-path:polygon(0 0, 116% 0, 100% 100%, 0 100%);}
+/* hover wipe removed in v10 - press only */
 .logbtn.is-done .lb-fill, .logbtn.is-done .lb-rev{clip-path:polygon(0 0, 116% 0, 100% 100%, 0 100%);}
 .logbtn .lb-done{transition:opacity .18s ease .5s;}
 
@@ -510,6 +510,70 @@ body[data-mode="endurance"] .gear-pop{background:rgba(34,30,40,.97);}
 .gear-backdrop{position:fixed; inset:0; z-index:55; background:rgba(0,0,0,.5); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); opacity:0; pointer-events:none; transition:opacity .25s ease, backdrop-filter .2s ease;}
 .gear-backdrop.show{opacity:1; pointer-events:auto;}
 .gear-backdrop.adjusting{opacity:0; -webkit-backdrop-filter:none; backdrop-filter:none;}
+<style id="v10">
+/* ===================== v10 ===================== */
+/* 1) log button: 300ms, press-only, undo(X) */
+.logbtn .lb-fill{transition:clip-path .3s linear;}
+.logbtn .lb-rev{transition:clip-path .3s linear, opacity .25s ease;}
+.logbtn .lb-done{transition:opacity .15s ease .22s;}
+.logbtn .lb-undo{position:absolute; inset:0; z-index:4; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none;}
+.logbtn .lb-undo .log-ico{color:var(--accent);}
+.logbtn.is-undo .lb-fill{background:#fff; clip-path:polygon(0 0, 116% 0, 100% 100%, 0 100%);}
+.logbtn.is-undo .lb-base, .logbtn.is-undo .lb-rev, .logbtn.is-undo .lb-done{opacity:0;}
+.logbtn.is-undo .lb-undo{opacity:1;}
+
+/* 2) nav: max transparency (glassy) */
+.bottomnav{background:transparent;}
+body[data-mode="endurance"] .bottomnav{background:transparent;}
+
+/* 4) clearance so nothing hides behind nav */
+body{padding-bottom:calc(150px + env(safe-area-inset-bottom));}
+
+/* 5) rank ladder number smaller + centred */
+.rank-line .rl-lv{width:30px; font-size:.6rem; display:flex; align-items:center; justify-content:center; line-height:1;}
+
+/* 7) record button: simple + lowered into nav */
+.rec-btn{background:radial-gradient(circle at 50% 30%, #fff, var(--accent) 58%); border:4px solid var(--bg); margin:0 6px; transform:translateY(-6px); overflow:visible;}
+.rec-btn:active{transform:translateY(-6px) scale(.92);}
+.rec-btn .rec-reticle{display:none;}
+.rec-btn .rec-dot{width:18px; height:18px; border-radius:50%; background:#fff; transition:all .25s;}
+.rec-btn.recording .rec-dot{width:14px; height:14px; border-radius:4px;}
+
+/* 8) settings modal gets a soft blur backdrop */
+.modal-bg{-webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
+
+/* 6) ID card redesign */
+.idcard{padding:0; overflow:hidden; background:var(--surface2);}
+.idc-cover2{height:96px; background:#2a2630 center/cover no-repeat;}
+.idc-cover2.nofill{background:linear-gradient(120deg, rgba(var(--accent-rgb),.55), rgba(var(--accent-rgb),.12));}
+.idc-body{padding:0 14px 14px;}
+.idc-headrow{display:flex; align-items:flex-end; gap:12px; margin-top:-34px;}
+.idc-avatar{position:relative; width:74px; height:74px; flex:0 0 auto;}
+.idc-avatar .av-ring{position:absolute; inset:-7px; border-radius:50%; background:conic-gradient(from -90deg, var(--accent), rgba(var(--accent-rgb),.12) 45%, var(--accent) 80%, rgba(var(--accent-rgb),.12)); -webkit-mask:radial-gradient(closest-side, transparent 60%, #000 62%); mask:radial-gradient(closest-side, transparent 60%, #000 62%); filter:drop-shadow(0 0 7px rgba(var(--accent-rgb),.8)); animation:avspin 7s linear infinite;}
+@keyframes avspin{to{transform:rotate(360deg);}}
+.idc-avatar .av-ticks{position:absolute; inset:-7px; border-radius:50%; background:repeating-conic-gradient(rgba(var(--accent-rgb),.85) 0deg 1.5deg, transparent 1.5deg 9deg); -webkit-mask:radial-gradient(closest-side, transparent 66%, #000 68% 72%, transparent 74%); mask:radial-gradient(closest-side, transparent 66%, #000 68% 72%, transparent 74%);}
+.idc-avatar .av-img{position:absolute; inset:0; border-radius:50%; overflow:hidden; background:var(--accent); display:flex; align-items:center; justify-content:center; font-family:var(--rankfont); font-size:1.35rem; color:#fff; border:3px solid var(--bg);}
+.idc-avatar .av-img img{width:100%; height:100%; object-fit:cover;}
+.idc-namewrap{flex:1; min-width:0; padding-bottom:6px;}
+.idc-plate{display:inline-flex; max-width:100%; background:rgba(var(--accent-rgb),.20); border:1px solid var(--accent); clip-path:polygon(0 0, 100% 0, 100% 56%, 90% 100%, 0 100%); padding:5px 18px 7px 11px;}
+.idc-plate .idc-name{font-family:var(--display); font-size:.92rem; letter-spacing:1.5px; text-transform:uppercase; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.idc-namewrap .idc-job{font-size:.7rem; color:var(--muted); margin-top:5px; padding-left:2px;}
+.idc-follow{align-self:center; flex:0 0 auto; background:var(--accent); color:#fff; border:none; border-radius:999px; padding:7px 17px; font-family:var(--sans); font-weight:700; font-size:.72rem; cursor:pointer; box-shadow:0 3px 12px rgba(var(--accent-rgb),.5);}
+.idc-stats2{display:flex; margin-top:14px; border-top:1px solid var(--border); padding-top:12px;}
+.idc-stats2 div{flex:1; text-align:center; position:relative;}
+.idc-stats2 div+div::before{content:''; position:absolute; left:0; top:4px; bottom:4px; width:1px; background:var(--border);}
+.idc-stats2 b{display:block; font-family:var(--display); font-size:1.12rem; color:#fff;}
+.idc-stats2 span{font-size:.55rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px;}
+.idc-bio{font-size:.74rem; color:var(--muted); line-height:1.5; margin-top:11px;}
+.idc-spotify{margin-top:12px;}
+
+/* 9) spotify accent strip */
+.sp-strip{display:flex; align-items:center; gap:11px; text-decoration:none; background:rgba(var(--accent-rgb),.16); border:1px solid var(--accent); border-radius:12px; padding:8px 12px 8px 8px;}
+.sp-art{width:44px; height:44px; border-radius:8px; background:var(--surface2) center/cover no-repeat; flex:0 0 auto;}
+.sp-meta{flex:1; min-width:0;}
+.sp-title{font-size:.82rem; color:#fff; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.sp-sub{font-size:.58rem; color:var(--accent); text-transform:uppercase; letter-spacing:1.5px; margin-top:2px;}
+.sp-play{width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.78rem; flex:0 0 auto;}
 </style>
 </head>
 <body data-mode="strength">
@@ -517,7 +581,7 @@ body[data-mode="endurance"] .gear-pop{background:rgba(34,30,40,.97);}
 <div class="bg-glow"></div>
 
 <header>
-  <button class="hdr-gear" id="gearBtn" onclick="toggleGear(event)" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.1 5.1l2.1 2.1M16.8 16.8l2.1 2.1M18.9 5.1l-2.1 2.1M7.2 16.8l-2.1 2.1"/></svg></button>
+  <button class="hdr-gear" id="gearBtn" onclick="openSettings()" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.1 5.1l2.1 2.1M16.8 16.8l2.1 2.1M18.9 5.1l-2.1 2.1M7.2 16.8l-2.1 2.1"/></svg></button>
   <div class="brand">WEAP<i>O</i>N</div>
   <div class="sub" id="headStats">Worldbreaker</div>
   <button class="mtoggle" id="modeToggle" onclick="toggleMode()" aria-label="Switch mode">
@@ -573,7 +637,7 @@ body[data-mode="endurance"] .gear-pop{background:rgba(34,30,40,.97);}
 <section class="tab" id="tab-avatar">
   <main>
     <div class="sectionTitle">Profile <small id="avRankSmall"></small></div>
-    <div class="idcard tappable" id="idCard" onclick="openSettings()"></div>
+    <div class="idcard" id="idCard"></div>
     <div class="card av-combined">
       <button class="ranks-btn icobtn" onclick="openRanks()" aria-label="All ranks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg></button>
       <div class="hint" style="letter-spacing:3px">LEVEL</div>
@@ -617,7 +681,7 @@ body[data-mode="endurance"] .gear-pop{background:rgba(34,30,40,.97);}
     </span>
     <span class="nav-label">Goals</span>
   </button>
-  <button class="rec-btn icobtn" id="recBtn" onclick="toggleRecord()" aria-label="Record session"><svg class="rec-reticle" viewBox="0 0 62 62" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M31 3v8M31 51v8M3 31h8M51 31h8"/></svg><span class="rec-dot"></span></button>
+  <button class="rec-btn icobtn" id="recBtn" onclick="toggleRecord()" aria-label="Record session"><span class="rec-dot"></span></button>
   <button data-t="report">
     <span class="ico-wrap">
       <svg class="ico ico-idle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V4M4 20h16M8 20v-5M12 20v-9M16 20v-3M20 20V7"/></svg>
@@ -682,16 +746,13 @@ body[data-mode="endurance"] .gear-pop{background:rgba(34,30,40,.97);}
       <label>Profile photo</label><input type="file" accept="image/*" id="pfPhoto" onchange="setPhoto(this)">
       <label>Cover photo</label><input type="file" accept="image/*" id="pfCover" onchange="setCover(this)">
     </div>
+    <div class="set-section">
+      <div class="seclabel">Display</div>
+      <div class="slider-row"><label>Background</label><input type="range" id="brightSlider" min="50" max="140" value="100" oninput="setBright(this.value)"><span class="sval" id="brightVal">100%</span></div>
+      <div class="slider-row"><label>Box glass</label><input type="range" id="transSlider" min="3" max="55" value="16" oninput="setTrans(this.value)"><span class="sval" id="transVal">16%</span></div>
+    </div>
     <div class="mrow"><button class="m-cancel blurlift" onclick="closeSettings()">Close</button><button class="m-save blurlift" onclick="saveSettings()">Save</button></div>
   </div>
-</div>
-
-<div class="gear-backdrop" id="gearBackdrop" onclick="closeGear()"></div>
-<div class="gear-pop" id="gearPop">
-  <div class="seclabel">Display</div>
-  <div class="slider-row"><label>Background</label><input type="range" id="brightSlider" min="50" max="140" value="100" oninput="setBright(this.value)"><span class="sval" id="brightVal">100%</span></div>
-  <div class="slider-row"><label>Box glass</label><input type="range" id="transSlider" min="3" max="55" value="16" oninput="setTrans(this.value)"><span class="sval" id="transVal">16%</span></div>
-  <div class="slider-row"><label>Nav glass</label><input type="range" id="navSlider" min="10" max="95" value="72" oninput="setNav(this.value)"><span class="sval" id="navVal">72%</span></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -908,7 +969,7 @@ function renderGroup(){
             <div class="val"><input type="number" step="1" inputmode="numeric" value="${v.reps}" onchange="setVal('${attr(ex.n)}','reps',this.value)"><span class="unit">reps · 3 sets</span></div>
             <button onclick="bump('${attr(ex.n)}','reps',1)">+</button>
           </div>
-          <button class="logbtn${todayN?' is-done locked':''}" id="log_${sid}" onclick="logEx('${attr(ex.n)}')" aria-label="Log set"><span class="lb-fill" aria-hidden="true"></span><span class="lb-base"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M12 6l6 6-6 6"></path></svg></span><span class="lb-rev" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M12 6l6 6-6 6"></path></svg></span><span class="lb-done" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span></button>
+          <button class="logbtn${todayN?' is-done':''}" id="log_${sid}" onclick="logTap('${attr(ex.n)}')" aria-label="Log set"><span class="lb-fill" aria-hidden="true"></span><span class="lb-base"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M12 6l6 6-6 6"></path></svg></span><span class="lb-rev" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l6 6-6 6M12 6l6 6-6 6"></path></svg></span><span class="lb-done" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span><span class="lb-undo" aria-hidden="true"><svg class="log-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></span></button>
         </div>
         <div class="detail" id="detail_${sid}"></div>
       </div>`;
@@ -925,17 +986,24 @@ function bump(name,field,d){
 }
 function setVal(name,field,val){ const ex=findEx(name); if(!ex) return; const v=getVals(ex); const x=parseFloat(val); if(!isNaN(x)&&x>=0) v[field]=x; updateCal(name); }
 function updateCal(name){ const ex=findEx(name); if(!ex) return; const v=getVals(ex); const el=document.getElementById('cal_'+slug(name)); if(el) el.textContent='≈ '+calForVals(v.kg,v.reps,3)+' kcal · 3 sets'; }
+function logTap(name){ if(S().logs.some(l=>l.ex===name && l.date===todayStr())) unlogEx(name); else logEx(name); }
+function unlogEx(name){
+  const btn=document.getElementById('log_'+slug(name));
+  if(btn){ btn.classList.remove('is-done','firing'); btn.classList.add('is-undo'); }
+  S().logs=S().logs.filter(l=>!(l.ex===name && l.date===todayStr()));
+  if(navigator.vibrate) navigator.vibrate(18);
+  save(); toast(name+' · log removed'); checkLevelUp(); setTimeout(renderGroup, 600);
+}
 function logEx(name){
   const ex=findEx(name); if(!ex) return; const v=getVals(ex);
-  if(S().logs.some(l=>l.ex===name && l.date===todayStr())) return;
   const log={id:uid(), date:todayStr(), ex:name, kg:v.kg, reps:v.reps, sets:3};
   const btn=document.getElementById('log_'+slug(name));
-  if(btn){ btn.classList.remove('firing'); void btn.offsetWidth; btn.classList.add('firing','is-done'); }
+  if(btn){ btn.classList.remove('firing','is-undo'); void btn.offsetWidth; btn.classList.add('firing','is-done'); }
   if(navigator.vibrate) navigator.vibrate([12,28,12]);
   S().logs.push(log);
   if(rec.on){ rec.items.push({ex:name, xp:logXP(log), cal:calForLog(log)}); updateRecBar(); }
   save(); toast(`${name} · ${v.kg} kg × ${v.reps}`);
-  checkLevelUp(); setTimeout(renderGroup, 1100);
+  checkLevelUp(); setTimeout(renderGroup, 600);
 }
 function toggleDetail(sid,name){
   const d=document.getElementById('detail_'+sid);
@@ -1287,6 +1355,9 @@ function openSettings(){
   document.getElementById('pfHeight').value=p.height||'';
   document.getElementById('pfBio').value=p.bio||'';
   document.getElementById('pfSpotify').value=p.spotify||'';
+  const _b=Math.round(((db.display.bright)||1)*100), _a=Math.round(((typeof db.display.surfaceA==='number')?db.display.surfaceA:0.16)*100);
+  const _bs=document.getElementById('brightSlider'); if(_bs){ _bs.value=_b; document.getElementById('brightVal').textContent=_b+'%'; }
+  const _ts=document.getElementById('transSlider'); if(_ts){ _ts.value=_a; document.getElementById('transVal').textContent=_a+'%'; }
   document.getElementById('setModal').classList.add('open');
 }
 function closeSettings(){ document.getElementById('setModal').classList.remove('open'); }
@@ -1301,11 +1372,21 @@ function saveSettings(){
   const w=parseFloat(document.getElementById('pfWeight').value); if(!isNaN(w)&&w>0&&w<400) db.bw=Math.round(w);
   save(); if(window.WeaponSync) WeaponSync.pushProfile(); renderIDCard(); const bw=document.getElementById('bwInput'); if(bw) bw.value=db.bw; closeSettings(); toast('Profile saved');
 }
-function spotifyEmbed(link){
-  if(!link) return '<div class="idc-empty">Add a Spotify track in Settings</div>';
+function spotifyStrip(link){
+  if(!link) return '<div class="idc-empty">Add a Spotify track in settings</div>';
   const m=String(link).match(/track[\/:]([A-Za-z0-9]+)/);
   if(!m) return '<div class="idc-empty">Not a valid Spotify track link</div>';
-  return '<iframe src="https://open.spotify.com/embed/track/'+m[1]+'" loading="lazy" allow="encrypted-media"></iframe>';
+  const url='https://open.spotify.com/track/'+m[1];
+  return '<a class="sp-strip" href="'+url+'" target="_blank" rel="noopener"><div class="sp-art" id="spArt"></div><div class="sp-meta"><div class="sp-title" id="spTitle">Loading\u2026</div><div class="sp-sub">Spotify</div></div><span class="sp-play">\u25B6</span></a>';
+}
+function fillSpotify(link){
+  const m=String(link).match(/track[\/:]([A-Za-z0-9]+)/); if(!m) return;
+  const url='https://open.spotify.com/track/'+m[1];
+  fetch('https://open.spotify.com/oembed?url='+encodeURIComponent(url)).then(function(r){return r.json();}).then(function(d){
+    const t=document.getElementById('spTitle'); const a=document.getElementById('spArt');
+    if(t&&d&&d.title) t.textContent=d.title;
+    if(a&&d&&d.thumbnail_url) a.style.backgroundImage='url('+JSON.stringify(d.thumbnail_url)+')';
+  }).catch(function(){ const t=document.getElementById('spTitle'); if(t) t.textContent='Open in Spotify'; });
 }
 function renderIDCard(){
   const el=document.getElementById('idCard'); if(!el) return;
@@ -1316,15 +1397,22 @@ function renderIDCard(){
   const job=p.job||(db.mode==='endurance'?'Runner':'Lifter');
   const daysLifted=new Set(S().logs.map(l=>l.date)).size;
   const followers=p.followers||0, challenges=p.challenges||0;
-  const photo=p.photo?('<img src="'+p.photo+'" alt="">'):esc(initials);
+  const av=p.photo?('<img src="'+p.photo+'" alt="">'):esc(initials);
+  const cover=p.cover?(' style="background-image:url('+JSON.stringify(p.cover)+')"'):'';
   el.innerHTML=
-    (p.cover?('<div class="idc-cover" style="background-image:url('+JSON.stringify(p.cover)+')"></div>'):'')+
+    '<div class="idc-cover2'+(p.cover?'':' nofill')+'"'+cover+'></div>'+
     '<div class="idc-tag">WEAPON ID</div>'+
-    '<div class="idc-top"><div class="idc-photo">'+photo+'</div>'+
-    '<div class="idc-id"><div class="idc-name">'+esc(name)+'</div><div class="idc-job">'+esc(job)+' · LV '+li.lvl+'</div></div></div>'+
-    '<div class="idc-stats"><div><b>'+daysLifted+'</b><span>DAYS LIFTED</span></div><div><b>'+followers+'</b><span>FOLLOWERS</span></div><div><b>'+challenges+'</b><span>CHALLENGES</span></div></div>'+
-    (p.bio?('<div class="idc-bio">'+esc(p.bio)+'</div>'):'')+
-    '<div class="idc-spotify">'+spotifyEmbed(p.spotify)+'</div>';
+    '<div class="idc-body">'+
+      '<div class="idc-headrow">'+
+        '<div class="idc-avatar"><div class="av-ring"></div><div class="av-ticks"></div><div class="av-img">'+av+'</div></div>'+
+        '<div class="idc-namewrap"><div class="idc-plate"><span class="idc-name">'+esc(name)+'</span></div><div class="idc-job">'+esc(job)+' · LV '+li.lvl+'</div></div>'+
+        '<button class="idc-follow" type="button" onclick="toast(\'Following — coming soon\')">Follow</button>'+
+      '</div>'+
+      '<div class="idc-stats2"><div><b>'+daysLifted+'</b><span>Days lifted</span></div><div><b>'+followers+'</b><span>Followers</span></div><div><b>'+challenges+'</b><span>Challenges</span></div></div>'+
+      (p.bio?('<div class="idc-bio">'+esc(p.bio)+'</div>'):'')+
+      '<div class="idc-spotify" id="idcSpotify">'+spotifyStrip(p.spotify)+'</div>'+
+    '</div>';
+  if(p.spotify) fillSpotify(p.spotify);
 }
 
 /* ================= profile photos ================= */
@@ -1332,20 +1420,12 @@ function readImg(input, cb){ const f=input.files&&input.files[0]; if(!f) return;
 function setPhoto(input){ readImg(input,function(d){ db.profile.photo=d; save(); if(window.WeaponSync) WeaponSync.pushProfile(); renderIDCard(); toast('Photo updated'); }); }
 function setCover(input){ readImg(input,function(d){ db.profile.cover=d; save(); if(window.WeaponSync) WeaponSync.pushProfile(); renderIDCard(); toast('Cover updated'); }); }
 
-/* ================= gear / display dropdown ================= */
-function toggleGear(e){ if(e) e.stopPropagation(); const pop=document.getElementById('gearPop'); const open=pop.classList.toggle('open'); document.getElementById('gearBackdrop').classList.toggle('show',open);
-  if(open){ const b=Math.round(((db.display.bright)||1)*100); const a=Math.round(((typeof db.display.surfaceA==='number')?db.display.surfaceA:0.16)*100); const n=Math.round(((typeof db.display.navA==='number')?db.display.navA:0.72)*100);
-    const set=(id,vid,val)=>{ const s=document.getElementById(id); if(s) s.value=val; const t=document.getElementById(vid); if(t) t.textContent=val+'%'; };
-    set('brightSlider','brightVal',b); set('transSlider','transVal',a); set('navSlider','navVal',n); }
-}
-function closeGear(){ document.getElementById('gearPop').classList.remove('open'); const bd=document.getElementById('gearBackdrop'); bd.classList.remove('show'); bd.classList.remove('adjusting'); }
-function setNav(v){ db.display.navA=(+v)/100; const t=document.getElementById('navVal'); if(t) t.textContent=v+'%'; applyDisplay(); save(); }
+/* settings opened from gear button via openSettings */
 
 /* ================= init ================= */
 save();
 applyDisplay();
 applyMode();
-['brightSlider','transSlider','navSlider'].forEach(function(id){ var el=document.getElementById(id); if(!el) return; var bd=document.getElementById('gearBackdrop'); var on=function(){ if(bd) bd.classList.add('adjusting'); }, off=function(){ if(bd) bd.classList.remove('adjusting'); }; el.addEventListener('pointerdown',on); el.addEventListener('pointerup',off); el.addEventListener('pointercancel',off); el.addEventListener('mousedown',on); window.addEventListener('mouseup',off); el.addEventListener('touchend',off); });
 window.addEventListener('resize', ()=>{ const t=activeTab(); if(t==='report'&&repView==='report') renderReport(); if(t==='goals') renderGoals(); if(t==='avatar') renderAvatar(); });
 if(!storageOK){ setTimeout(()=>toast("Heads up: data won't save in this mode — host it to keep history"),700); }
 
@@ -1363,7 +1443,7 @@ if(!storageOK){ setTimeout(()=>toast("Heads up: data won't save in this mode —
 
 <!-- ===== user picker (top-left button, no login) ===== -->
 <div id="wpn-user">
-  <button id="wpn-user-btn" type="button">Select user ▾</button>
+  <button id="wpn-user-btn" type="button">USER</button>
   <div id="wpn-user-bar" hidden>
     <div class="wpn-users" id="wpn-user-list"></div>
     <form id="wpn-add" class="wpn-add">
@@ -1375,10 +1455,10 @@ if(!storageOK){ setTimeout(()=>toast("Heads up: data won't save in this mode —
 </div>
 <style>
   #wpn-user{ position:fixed; top:56px; right:12px; z-index:9998; font-family:system-ui,sans-serif; }
-  #wpn-user-btn{ background:#cc3551; color:#fff; border:0; border-radius:8px;
-    padding:8px 14px; font:600 13px/1 system-ui; cursor:pointer; }
-  #wpn-user-bar{ margin-top:8px; width:230px; background:#16161a; color:#f3efec;
-    border:1px solid #2a2a30; border-radius:12px; padding:10px; }
+  #wpn-user-btn{ background:rgba(204,53,81,.85); color:#fff; border:1px solid rgba(255,255,255,.25); border-radius:999px;
+    padding:9px 22px; font-family:'Anurati','Orbitron',sans-serif; font-size:12px; letter-spacing:5px; text-transform:uppercase; cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); box-shadow:0 4px 16px rgba(204,53,81,.45); }
+  #wpn-user-bar{ margin-top:8px; width:230px; background:rgba(22,22,26,.92); color:#f3efec;
+    border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:12px; -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); box-shadow:0 18px 44px rgba(0,0,0,.6); }
   .wpn-users{ display:flex; flex-direction:column; gap:4px; max-height:240px; overflow:auto; }
   .wpn-users button{ text-align:left; background:#202026; color:#f3efec; border:0;
     border-radius:8px; padding:9px 10px; font-size:14px; cursor:pointer; }
