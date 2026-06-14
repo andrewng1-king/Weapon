@@ -1243,12 +1243,12 @@ if(!storageOK){ setTimeout(()=>toast("Heads up: data won't save in this mode —
       users.forEach(function(u){
         var b = document.createElement('button');
         b.type = 'button';
-        b.textContent = u.display_name || u.username;
+        b.textContent = u.username;
         if (u.id === cur) { b.className = 'is-current'; b.textContent += '  ✓'; }
         b.addEventListener('click', async function(){
           say('Switching…');
           await S.selectUser(u.id);
-          btn.textContent = (u.display_name || u.username) + ' ▾';
+          btn.textContent = (u.username) + ' ▾';
           bar.hidden = true;
         });
         list.appendChild(b);
@@ -1276,7 +1276,7 @@ if(!storageOK){ setTimeout(()=>toast("Heads up: data won't save in this mode —
     try {
       var users = await S.listUsers();
       var u = users.find(function(x){ return x.id === cur; });
-      if (u) btn.textContent = (u.display_name || u.username) + ' ▾';
+      if (u) btn.textContent = (u.username) + ' ▾';
     } catch (e) {}
   })();
 })();
