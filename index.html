@@ -71,8 +71,8 @@
   .hdr-gear svg{width:18px; height:18px;}
 
   /* ===== mode toggle ===== */
-  .mtoggle{position:absolute; right:14px; top:14px; width:100px; height:32px; border-radius:99px; border:1px solid var(--border); background:rgba(255,255,255,.05); cursor:pointer; padding:0; overflow:hidden; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);}
-  .mtoggle .mt-opt{position:absolute; top:0; height:100%; width:50%; display:flex; align-items:center; justify-content:center; font-size:.55rem; letter-spacing:1.5px; font-weight:700; color:var(--muted); z-index:2; transition:color .3s; font-family:var(--sans);}
+  .mtoggle{position:absolute; right:14px; top:14px; width:78px; height:26px; border-radius:99px; border:1px solid var(--border); background:rgba(255,255,255,.05); cursor:pointer; padding:0; overflow:hidden; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);} /* Patch 1.1.5: smaller mode switch */
+  .mtoggle .mt-opt{position:absolute; top:0; height:100%; width:50%; display:flex; align-items:center; justify-content:center; font-size:.72rem; letter-spacing:0; font-weight:400; color:var(--muted); z-index:2; transition:color .3s; font-family:var(--title); padding-top:1px;} /* Patch 1.1.5: S/E use the app-name (title) font */
   .mtoggle .mt-opt.str{left:0;} .mtoggle .mt-opt.end{right:0;}
   .mtoggle .mt-knob{position:absolute; top:2px; left:2px; width:calc(50% - 3px); height:calc(100% - 4px); border-radius:99px; background:var(--accent); transition:transform .4s cubic-bezier(.3,.9,.25,1), background .35s; z-index:1; box-shadow:0 2px 10px rgba(var(--accent-rgb),.55);}
   body[data-mode="endurance"] .mtoggle .mt-knob{transform:translateX(100%);}
@@ -115,7 +115,7 @@
   .logged-today{font-size:.75rem; color:var(--green); margin-top:6px; font-weight:700;}
 
   .controls{display:flex; gap:8px; margin-top:14px;}
-  .stepper{flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:14px; display:flex; align-items:center; overflow:hidden; min-height:54px;}
+  .stepper{flex:1; background:rgba(255,255,255,.05); -webkit-backdrop-filter:blur(16px) saturate(1.2); backdrop-filter:blur(16px) saturate(1.2); border:1px solid rgba(255,255,255,.14); border-radius:14px; display:flex; align-items:center; overflow:hidden; min-height:54px; box-shadow:inset 0 1px 0 rgba(255,255,255,.06);} /* Patch 1.1.5: translucent glass steppers */
   .stepper button{width:44px; align-self:stretch; background:none; border:none; color:#e6e0db; font-size:1.5rem; cursor:pointer; font-weight:700; font-family:var(--sans);}
   .stepper button:active{background:var(--border);}
   .stepper .val{flex:1; text-align:center;}
@@ -245,9 +245,9 @@
   /* o-shape removed (using letter O) */
 
   /* angular S/E toggle */
-  .mtoggle{border-radius:7px; width:88px;}
+  .mtoggle{border-radius:7px; width:72px;}
   .mtoggle .mt-knob{border-radius:5px;}
-  .mtoggle .mt-opt{font-size:.84rem;}
+  .mtoggle .mt-opt{font-size:.8rem;}
   .mtoggle .mt-opt.str{font-family:var(--sans); font-weight:800; font-size:.82rem; letter-spacing:0;}
   .mtoggle .mt-opt.end{font-family:var(--sans); font-weight:700; transform:skewX(-17deg); letter-spacing:0;}
 
@@ -628,11 +628,11 @@ body[data-mode="endurance"]{ --surface-rgb:13,12,18; --surface2:#16131d; }
 .card,.ex,.idcard{ zoom:var(--ui-scale,1); }
 
 /* ---- 3b) app name (brand) size — dev ---- */
-header .brand{ font-size:var(--brand-size,1.4rem); }
+header .brand{ font-size:var(--brand-size,1.15rem); }
 
 /* ---- 1) USER button -> white user icon (red tab kept) ---- */
 #wpn-user-btn{ width:42px; height:42px; padding:0; display:flex; align-items:center; justify-content:center; border-radius:50%; letter-spacing:0; }
-#wpn-user-btn svg{ width:22px; height:22px; display:block; }
+#wpn-user-btn svg{ width:22px; height:22px; display:block; fill:#1b1b1f; } /* Patch 1.1.5: dark icon on yellow */
 #wpn-user-btn[disabled]{ opacity:.5; }
 
 /* ---- 2/3/9) ID card: centered avatar, name below, rank emblem, bio ---- */
@@ -695,17 +695,40 @@ header .brand{ font-size:var(--brand-size,1.4rem); }
 
 /* ---- 7/8) history calendar modal ---- */
 .cal-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
-.cal-head button{ width:34px; height:34px; border-radius:9px; background:var(--surface2); border:1px solid var(--border); color:var(--text); font-size:1.1rem; cursor:pointer; line-height:1; }
+.cal-head button{ width:34px; height:34px; border-radius:9px; background:var(--surface2); border:1px solid var(--border); color:var(--text); font-size:1.1rem; cursor:pointer; line-height:1; touch-action:manipulation; -webkit-user-select:none; user-select:none; } /* Patch 1.1.5: stop iOS double-tap zoom on month nav */
 .cal-title{ font-family:var(--display); font-size:.9rem; letter-spacing:2px; text-transform:uppercase; }
 .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
 .cal-dow{ text-align:center; font-size:.54rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; padding:2px 0 4px; }
-.cal-cell{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; border-radius:9px; font-size:.82rem; font-weight:600; color:var(--muted); background:var(--surface2); border:1px solid transparent; cursor:pointer; }
+.cal-cell{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; border-radius:9px; font-size:.82rem; font-weight:600; color:var(--muted); background:var(--surface2); border:1px solid transparent; cursor:pointer; touch-action:manipulation; -webkit-user-select:none; user-select:none; }
 .cal-cell.empty{ background:none; cursor:default; }
 .cal-cell.trained{ color:#fff; background:rgba(var(--accent-rgb),.22); border-color:rgba(var(--accent-rgb),.5); }
 .cal-cell.today{ border-color:var(--gold); }
 .cal-cell.sel{ background:var(--accent); color:#fff; }
 .cal-detail{ margin-top:16px; border-top:1px solid var(--border); padding-top:12px; }
 .cal-detail .day-sum{ margin-top:0; }
+
+/* ================= Patch 1.1.5 ================= */
+/* 5) Settings as a user icon on the ID card (top-right) */
+.idc-settings{ position:absolute; top:10px; right:10px; z-index:6; width:34px; height:34px; padding:0; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(0,0,0,.42); border:1px solid rgba(255,255,255,.22); color:#fff; cursor:pointer; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); transition:background .15s, transform .1s; }
+.idc-settings svg{ width:19px; height:19px; display:block; }
+.idc-settings:active{ transform:scale(.92); background:rgba(0,0,0,.6); }
+
+/* 3.2) dev-mode drag-to-resize corner handle */
+.dev-rz{ position:absolute; right:-7px; bottom:-7px; width:20px; height:20px; border-radius:6px; background:var(--accent); border:2px solid var(--bg); cursor:nwse-resize; z-index:40; box-shadow:0 2px 7px rgba(0,0,0,.55); touch-action:none; }
+.dev-rz.vy{ cursor:ns-resize; }
+.dev-rz::after{ content:''; position:absolute; inset:5px; border-right:2px solid #fff; border-bottom:2px solid #fff; opacity:.9; }
+.dev-hint{ font-size:.72rem; color:var(--muted); line-height:1.5; margin:0; }
+.dev-hint b{ color:#e7e2e5; }
+
+/* 6) main menu drawer (top-left 3-stripes) */
+.mm-bg{ position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,.5); opacity:0; pointer-events:none; transition:opacity .25s ease; -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px); }
+.mm-bg.open{ opacity:1; pointer-events:auto; }
+.mm-panel{ position:absolute; top:0; left:0; bottom:0; width:80%; max-width:320px; background:var(--surface2); border-right:1px solid var(--border); box-shadow:6px 0 30px rgba(0,0,0,.5); padding:calc(20px + env(safe-area-inset-top)) 16px 20px; transform:translateX(-104%); transition:transform .28s cubic-bezier(.3,.8,.3,1); display:flex; flex-direction:column; gap:8px; }
+.mm-bg.open .mm-panel{ transform:translateX(0); }
+.mm-greet{ font-family:var(--display); font-size:1.25rem; letter-spacing:1px; color:#fff; margin:6px 4px 16px; }
+.mm-item{ display:flex; align-items:center; gap:14px; width:100%; text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:15px 16px; color:#f1ecef; font-family:var(--sans); font-size:.95rem; font-weight:600; cursor:pointer; transition:background .15s, border-color .15s; touch-action:manipulation; }
+.mm-item svg{ width:22px; height:22px; color:var(--accent); flex:0 0 auto; }
+.mm-item:active{ background:rgba(var(--accent-rgb),.14); border-color:var(--accent); }
 </style>
 </head>
 <body data-mode="strength">
@@ -713,7 +736,7 @@ header .brand{ font-size:var(--brand-size,1.4rem); }
 <div class="bg-glow"></div>
 
 <header>
-  <button class="hdr-gear" id="gearBtn" onclick="openSettings()" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <button class="hdr-gear" id="gearBtn" onclick="openMainMenu()" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   <div class="brand">WEAP<i>O</i>N</div>
   <div class="sub" id="headStats">Worldbreaker</div>
   <button class="mtoggle" id="modeToggle" onclick="toggleMode()" aria-label="Switch mode">
@@ -787,11 +810,7 @@ header .brand{ font-size:var(--brand-size,1.4rem); }
       <div class="hint" id="radarHint">Sets trained per muscle group — all time</div>
       <canvas class="rep" id="chRadar" style="height:260px"></canvas>
     </div>
-    <div class="card bw-card">
-      <svg class="bw-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2.2"/><path d="M12 6.4v8M12 8.6l-4.2 2M12 8.6l4.2 2M12 14.4l-3 5.4M12 14.4l3 5.4"/></svg>
-      <div class="bw-main"><div class="bw-label">Bodyweight</div><div class="bw-sub">Used for calorie estimates</div></div>
-      <div class="bw-input"><input id="bwInput" type="number" inputmode="decimal" value="75" onchange="saveBW(this.value)"><span>kg</span></div>
-    </div>
+    <!-- Patch 1.1.5: bodyweight card removed from Avatar tab — it's set in the ID card / Settings (pfWeight) -->
 
     <!-- DEV MODE -->
     <div class="dev-switch" id="devSwitch" onclick="toggleDev()">
@@ -800,21 +819,12 @@ header .brand{ font-size:var(--brand-size,1.4rem); }
     </div>
     <div class="card dev-panel" id="devPanel" style="display:none">
       <h2>Dev controls</h2>
-      <div class="dev-row"><label>Profile numbers <span style="text-transform:none;letter-spacing:0;font-weight:400">(blank = auto)</span></label>
-        <div class="dev-nums">
-          <div><span>Days lifted</span><input id="devDays" type="number" inputmode="numeric" onchange="devNum('days',this.value)"></div>
-          <div><span>Followers</span><input id="devFollowers" type="number" inputmode="numeric" onchange="devNum('followers',this.value)"></div>
-          <div><span>Challenges</span><input id="devChallenges" type="number" inputmode="numeric" onchange="devNum('challenges',this.value)"></div>
-        </div>
-      </div>
+      <!-- Patch 1.1.5: number inputs & size sliders removed. Sizes are now set by dragging the elements directly. -->
       <div class="dev-row"><label>Rank level</label>
         <div class="dev-slider"><input id="devLvl" type="range" min="1" max="21" step="1" oninput="devSetLvl(this.value)"><span class="dv" id="devLvlVal"></span></div>
       </div>
       <div class="dev-row"><label>Sizes</label>
-        <div class="dev-slider"><label>App name</label><input id="devBrand" type="range" min="0.9" max="2.4" step="0.05" oninput="devSetBrand(this.value)"><span class="dv" id="devBrandVal"></span></div>
-        <div class="dev-slider"><label>Avatar</label><input id="devAv" type="range" min="54" max="140" step="1" oninput="devSetAv(this.value)"><span class="dv" id="devAvVal"></span></div>
-        <div class="dev-slider"><label>Spotify</label><input id="devSp" type="range" min="60" max="180" step="1" oninput="devSetSp(this.value)"><span class="dv" id="devSpVal"></span></div>
-        <div class="dev-slider"><label>Box elements</label><input id="devUi" type="range" min="80" max="130" step="1" oninput="devSetUi(this.value)"><span class="dv" id="devUiVal"></span></div>
+        <p class="dev-hint">Turn dev mode on, then drag the <b>◣ corner handle</b> on the app name, the avatar, or the Spotify player to resize it.</p>
       </div>
       <div class="dev-row"><label>Color scheme — <span id="devModeLabel"></span></label><div class="dev-colors" id="devColors"></div></div>
       <button class="dev-reset" onclick="devReset()">Reset dev overrides</button>
@@ -886,6 +896,25 @@ header .brand{ font-size:var(--brand-size,1.4rem); }
 <!-- all ranks modal -->
 <div class="modal-bg" id="ranksModal" onclick="if(event.target===this)closeRanks()">
   <div class="modal"><h3>Rank ladder</h3><div class="ranks-list" id="ranksList"></div><div class="mrow"><button class="m-save blurlift" onclick="closeRanks()">Close</button></div></div>
+</div>
+
+<!-- Patch 1.1.5: main menu drawer (top-left 3-stripes) -->
+<div class="mm-bg" id="mainMenuBg" onclick="if(event.target===this)closeMainMenu()">
+  <div class="mm-panel" id="mainMenuPanel">
+    <div class="mm-greet" id="mmGreet">Hi!</div>
+    <button class="mm-item" type="button" onclick="toast('Rankings — coming soon')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V4h12v5a6 6 0 0 1-12 0z"/><path d="M6 5H3v2a3 3 0 0 0 3 3M18 5h3v2a3 3 0 0 1-3 3M9 21h6M12 15v6"/></svg>
+      <span>Rankings</span>
+    </button>
+    <button class="mm-item" type="button" onclick="toast('Club — coming soon')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 5.2a3.2 3.2 0 0 1 0 5.6M17.5 14.2A6.5 6.5 0 0 1 21.5 20"/></svg>
+      <span>Club</span>
+    </button>
+    <button class="mm-item" type="button" onclick="toast('Challenges — coming soon')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.2 5.5.8-4 3.9.9 5.6L12 16.9 7.1 18.5l.9-5.6-4-3.9 5.5-.8z"/></svg>
+      <span>Challenges</span>
+    </button>
+  </div>
 </div>
 
 <!-- history calendar modal -->
@@ -984,7 +1013,7 @@ function accent(){ return curAccent().hex; }
 function accentRGB(){ return curAccent().rgb; }
 function applyColors(){ const a=curAccent(); const s=document.body.style; s.setProperty('--accent',a.hex); s.setProperty('--accent-dim',a.dim); s.setProperty('--accent-rgb',a.rgb); }
 function applyDev(){ const d=db.dev||{}; const r=document.documentElement.style;
-  r.setProperty('--brand-size',(d.brand||1.4)+'rem');
+  r.setProperty('--brand-size',(d.brand||1.15)+'rem'); /* Patch 1.1.5: smaller default app name */
   r.setProperty('--av-size',(d.av||82)+'px');
   r.setProperty('--sp-h',(d.sp||80)+'px');
   r.setProperty('--ui-scale',(d.ui||1)); }
@@ -1483,34 +1512,21 @@ function renderAvatar(){
 }
 
 /* ================= dev mode ================= */
-function toggleDev(){ db.dev=db.dev||{}; db.dev.on=!db.dev.on; save(); renderDevPanel(); }
+function toggleDev(){ db.dev=db.dev||{}; db.dev.on=!db.dev.on; save(); renderDevPanel(); devRefreshHandles(); }
 function renderDevPanel(){
   const d=db.dev||(db.dev={}); const on=!!d.on;
   const sw=document.getElementById('devSwitch'); if(sw) sw.classList.toggle('on',on);
   const panel=document.getElementById('devPanel'); if(!panel) return;
   panel.style.display=on?'':'none'; if(!on) return;
   const g=id=>document.getElementById(id);
-  const autoDays=new Set(S().logs.map(l=>l.date)).size;
-  g('devDays').value=(d.days!=null&&d.days!=='')?d.days:''; g('devDays').placeholder=autoDays;
-  g('devFollowers').value=(d.followers!=null&&d.followers!=='')?d.followers:''; g('devFollowers').placeholder='0';
-  g('devChallenges').value=(d.challenges!=null&&d.challenges!=='')?d.challenges:''; g('devChallenges').placeholder='0';
   const lvl=devLevel(); g('devLvl').value=lvl; g('devLvlVal').textContent='LV '+lvl+' · '+STR_RANKS[Math.min(lvl,MAXLVL)-1];
-  const br=d.brand||1.4; g('devBrand').value=br; g('devBrandVal').textContent=br.toFixed(2)+' rem';
-  const av=d.av||82; g('devAv').value=av; g('devAvVal').textContent=av+' px';
-  const sp=d.sp||80; g('devSp').value=sp; g('devSpVal').textContent=sp+' px';
-  const ui=Math.round((d.ui||1)*100); g('devUi').value=ui; g('devUiVal').textContent=ui+' %';
   g('devModeLabel').textContent=db.mode==='endurance'?'Run (blue / teal)':'Strength (red)';
   const arr=ACCENTS[db.mode]||ACCENTS.strength; const sel=(d['color_'+db.mode])||0;
   g('devColors').innerHTML=arr.map((c,i)=>'<div class="dev-swatch'+(i===sel?' on':'')+'" style="background:'+c.hex+'" title="'+c.name+'" onclick="devSetColor('+i+')"></div>').join('');
 }
-function devNum(field,v){ db.dev=db.dev||{}; const t=String(v).trim(); db.dev[field]= t===''?'':Math.max(0,parseInt(t,10)||0); save(); renderIDCard(); }
 function devSetLvl(v){ db.dev=db.dev||{}; db.dev.lvl=parseInt(v,10)||1; save(); renderAvatar(); }
-function devSetBrand(v){ db.dev=db.dev||{}; db.dev.brand=parseFloat(v)||1.4; applyDev(); document.getElementById('devBrandVal').textContent=db.dev.brand.toFixed(2)+' rem'; save(); }
-function devSetAv(v){ db.dev=db.dev||{}; db.dev.av=parseInt(v,10)||82; applyDev(); document.getElementById('devAvVal').textContent=db.dev.av+' px'; save(); }
-function devSetSp(v){ db.dev=db.dev||{}; db.dev.sp=parseInt(v,10)||80; applyDev(); document.getElementById('devSpVal').textContent=db.dev.sp+' px'; save(); }
-function devSetUi(v){ db.dev=db.dev||{}; db.dev.ui=(parseInt(v,10)||100)/100; applyDev(); document.getElementById('devUiVal').textContent=Math.round(db.dev.ui*100)+' %'; save(); }
 function devSetColor(i){ db.dev=db.dev||{}; db.dev['color_'+db.mode]=i; save(); applyColors(); renderAvatar(); }
-function devReset(){ if(!confirm('Reset all dev overrides? (keeps dev mode on)')) return; db.dev={on:true}; save(); applyDev(); applyColors(); renderAvatar(); toast('Dev overrides reset'); }
+function devReset(){ if(!confirm('Reset all dev overrides? (keeps dev mode on)')) return; db.dev={on:true}; save(); applyDev(); applyColors(); renderAvatar(); renderIDCard(); devRefreshHandles(); toast('Dev overrides reset'); }
 
 /* ================= history calendar ================= */
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -1670,24 +1686,28 @@ function renderIDCard(){
   const followers=(d.followers!=null&&d.followers!=='')?d.followers:(p.followers||0);
   const challenges=(d.challenges!=null&&d.challenges!=='')?d.challenges:(p.challenges||0);
   const av=p.photo?('<img src="'+p.photo+'" alt="">'):esc(initials);
-  const cover=p.cover?(' style="background-image:url('+JSON.stringify(p.cover)+')"'):'';
+  const cover=p.cover?(" style=\"background-image:url('"+String(p.cover).replace(/'/g,"%27")+"')\""):''; /* Patch 1.1.5: single-quote url() so the inline style attribute isn't broken by JSON double-quotes */
   const rankIco=emblemForLevel(devLevel());
   el.innerHTML=
+    /* Patch 1.1.5: settings now lives on the ID card (top-right) as a user icon */
+    '<button class="idc-settings" type="button" onclick="openSettings()" aria-label="Profile & settings" title="Profile & settings"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20.5c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5v.5H4z"/></svg></button>'+
     '<div class="idc-cover2'+(p.cover?'':' nofill')+'"'+cover+'></div>'+
     '<div class="idc-body">'+
       '<div class="idc-headrow">'+
         '<div class="idc-avwrap"><div class="idc-avatar" onclick="pickPhoto()" title="Change photo"><div class="av-ring"></div><div class="av-ticks"></div><div class="av-img">'+av+'</div><span class="av-edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="3.5"/></svg></span></div><div class="idc-rankico">'+rankIco+'</div></div>'+
         '<div class="idc-namewrap"><div class="idc-name">'+esc(name)+'</div></div>'+
-        '<div class="idc-actions">'+
-          '<button class="idc-follow" type="button" onclick="toast(\'Following — coming soon\')">Follow</button>'+
-          '<button class="idc-act" type="button" onclick="toast(\'Message — coming soon\')">Message</button>'+
-          '<button class="idc-act" type="button" onclick="toast(\'Invite — coming soon\')">Invite</button>'+
-        '</div>'+
       '</div>'+
+      /* Patch 1.1.5: bio now sits above the Follow / Message / Invite row */
       (p.bio?('<div class="idc-bio">'+esc(p.bio)+'</div>'):'')+
+      '<div class="idc-actions">'+
+        '<button class="idc-follow" type="button" onclick="toast(\'Following — coming soon\')">Follow</button>'+
+        '<button class="idc-act" type="button" onclick="toast(\'Message — coming soon\')">Message</button>'+
+        '<button class="idc-act" type="button" onclick="toast(\'Invite — coming soon\')">Invite</button>'+
+      '</div>'+
       '<div class="idc-stats2"><div><b>'+fmtK(daysLifted)+'</b><span>Days lifted</span></div><div><b>'+fmtK(followers)+'</b><span>Followers</span></div><div><b>'+fmtK(challenges)+'</b><span>Challenges</span></div></div>'+
       '<div class="idc-spotify">'+spotifyEmbed(p.spotify)+'</div>'+
     '</div>';
+  devRefreshHandles();
 }
 
 /* ================= profile photos ================= */
@@ -1696,6 +1716,45 @@ function setPhoto(input){ readImg(input,function(d){ db.profile.photo=d; save();
 /* Patch 1.1.4: tap the ID-card avatar to change the photo (reuses the settings photo input). */
 function pickPhoto(){ const i=document.getElementById('pfPhoto'); if(i) i.click(); }
 function setCover(input){ readImg(input,function(d){ db.profile.cover=d; save(); if(window.WeaponSync) WeaponSync.pushProfile(); renderIDCard(); toast('Cover updated'); }); }
+
+/* ===== Patch 1.1.5: main menu drawer (Rankings / Club / Challenges) ===== */
+function openMainMenu(){
+  const g=document.getElementById('mmGreet');
+  const nm=(db.profile&&db.profile.name)?db.profile.name.trim().split(/\s+/)[0]:'';
+  if(g) g.textContent='Hi, '+(nm||'Athlete')+'!';
+  const bg=document.getElementById('mainMenuBg'); if(bg) bg.classList.add('open');
+}
+function closeMainMenu(){ const bg=document.getElementById('mainMenuBg'); if(bg) bg.classList.remove('open'); }
+
+/* ===== Patch 1.1.5: dev-mode drag-to-resize handles (replaces size sliders) ===== */
+function attachDevHandle(el, opt){
+  if(!el || el.querySelector(':scope > .dev-rz')) return;
+  if(getComputedStyle(el).position==='static') el.style.position='relative';
+  const h=document.createElement('div');
+  h.className='dev-rz'+(opt.axis==='y'?' vy':'');
+  h.title='Drag to resize';
+  el.appendChild(h);
+  let sx=0, sy=0, sv=0, active=false;
+  h.addEventListener('pointerdown',function(e){ e.preventDefault(); e.stopPropagation(); active=true; sx=e.clientX; sy=e.clientY; sv=opt.get(); try{h.setPointerCapture(e.pointerId);}catch(_){} });
+  h.addEventListener('pointermove',function(e){ if(!active) return; const d=(opt.axis==='y'?(e.clientY-sy):(e.clientX-sx)); let v=sv+d*opt.step; v=Math.max(opt.min,Math.min(opt.max,v)); opt.set(v); });
+  function end(e){ if(!active) return; active=false; try{h.releasePointerCapture(e.pointerId);}catch(_){} save(); if(window.WeaponSync) WeaponSync.pushProfile&&WeaponSync.pushProfile(); }
+  h.addEventListener('pointerup',end);
+  h.addEventListener('pointercancel',end);
+  h.addEventListener('click',function(e){ e.stopPropagation(); });
+}
+function devRefreshHandles(){
+  document.querySelectorAll('.dev-rz').forEach(function(n){ n.remove(); });
+  if(!(db.dev&&db.dev.on)) return;
+  attachDevHandle(document.querySelector('header .brand'), { axis:'x', min:0.8, max:2.6, step:0.006,
+    get:function(){ return db.dev.brand||1.15; },
+    set:function(v){ db.dev.brand=Math.round(v*100)/100; applyDev(); } });
+  attachDevHandle(document.querySelector('#idCard .idc-avatar'), { axis:'x', min:54, max:160, step:1,
+    get:function(){ return db.dev.av||82; },
+    set:function(v){ db.dev.av=Math.round(v); applyDev(); } });
+  attachDevHandle(document.querySelector('#idCard .idc-spotify'), { axis:'y', min:60, max:200, step:1,
+    get:function(){ return db.dev.sp||80; },
+    set:function(v){ db.dev.sp=Math.round(v); applyDev(); } });
+}
 
 /* settings opened from gear button via openSettings */
 
@@ -1734,20 +1793,20 @@ if(!storageOK){ setTimeout(()=>toast("Heads up: data won't save in this mode —
 </div>
 <style>
   #wpn-user{ position:fixed; top:56px; right:12px; z-index:9998; font-family:system-ui,sans-serif; }
-  #wpn-user-btn{ background:rgba(204,53,81,.85); color:#fff; border:1px solid rgba(255,255,255,.25); border-radius:999px;
-    padding:9px 22px; font-family:'Anurati','Orbitron',sans-serif; font-size:12px; letter-spacing:5px; text-transform:uppercase; cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); box-shadow:0 4px 16px rgba(204,53,81,.45); }
+  #wpn-user-btn{ background:rgba(255,210,63,.92); color:#1b1b1f; border:1px solid rgba(0,0,0,.25); border-radius:999px;
+    padding:9px 22px; font-family:'Anurati','Orbitron',sans-serif; font-size:12px; letter-spacing:5px; text-transform:uppercase; cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); box-shadow:0 4px 16px rgba(255,210,63,.4); } /* Patch 1.1.5: pink -> lemon yellow #FFD23F */
   #wpn-user-bar{ margin-top:8px; width:230px; background:rgba(22,22,26,.92); color:#f3efec;
     border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:12px; -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); box-shadow:0 18px 44px rgba(0,0,0,.6); }
   .wpn-users{ display:flex; flex-direction:column; gap:4px; max-height:240px; overflow:auto; }
   .wpn-users button{ text-align:left; background:#202026; color:#f3efec; border:0;
     border-radius:8px; padding:9px 10px; font-size:14px; cursor:pointer; }
-  .wpn-users button.is-current{ outline:2px solid #cc3551; }
+  .wpn-users button.is-current{ outline:2px solid #FFD23F; }
   .wpn-add{ display:flex; gap:6px; margin-top:10px; }
   .wpn-add input{ flex:1; min-width:0; background:#0f0f12; border:1px solid #2a2a30;
     color:#f3efec; border-radius:8px; padding:8px; font-size:13px; }
-  .wpn-add button{ background:#cc3551; color:#fff; border:0; border-radius:8px;
+  .wpn-add button{ background:#FFD23F; color:#1b1b1f; border:0; border-radius:8px;
     padding:8px 10px; font:600 13px system-ui; cursor:pointer; white-space:nowrap; }
-  #wpn-user-msg{ min-height:14px; margin:8px 0 0; font-size:12px; color:#e3a; }
+  #wpn-user-msg{ min-height:14px; margin:8px 0 0; font-size:12px; color:#f0b429; }
 </style>
 <script>
 (function(){
