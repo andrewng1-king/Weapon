@@ -244,6 +244,8 @@ select.exsel{width:100%;background:var(--panel-2);border:1px solid var(--line);c
 .ring .lv{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .ring .lv .n{font-family:var(--num);font-weight:800;font-size:1.9rem;line-height:1;color:var(--ink);}
 .ring .lv .t{font-size:.5rem;letter-spacing:.18em;color:var(--faint);text-transform:uppercase;margin-top:3px;}
+.ring.lvpulse .lv .n{animation:lvnumpulse 440ms var(--e-spring);}
+@keyframes lvnumpulse{0%{transform:scale(1)}45%{transform:scale(1.14);color:var(--accent)}100%{transform:scale(1)}}
 .heroinfo{flex:1;min-width:0;}
 .rank-name{font-family:var(--display);font-weight:700;font-size:1.25rem;letter-spacing:-.01em;color:var(--accent);}
 .rank-next{font-size:.74rem;color:var(--faint);margin-top:4px;}
@@ -1496,10 +1498,15 @@ function renderReport(){
   if(!logs.length){ st.innerHTML=''; return; }
   const first=logs[0].kg, last=logs[logs.length-1].kg, best=Math.max(...logs.map(l=>l.kg));
   const ch=first?Math.round((last-first)/first*100):0;
-  st.innerHTML=`<div class="stat"><div class="v">${first}</div><div class="l">First</div></div>
-    <div class="stat"><div class="v">${last}</div><div class="l">Now</div></div>
-    <div class="stat"><div class="v" style="color:var(--accent)">${best}</div><div class="l">Best</div></div>
-    <div class="stat"><div class="v" style="color:${ch>=0?'var(--good)':'var(--warn)'}">${ch>=0?'+':''}${ch}%</div><div class="l">Growth</div></div>`;
+  st.innerHTML=`<div class="stat"><div class="v">0</div><div class="l">First</div></div>
+    <div class="stat"><div class="v">0</div><div class="l">Now</div></div>
+    <div class="stat"><div class="v" style="color:var(--accent)">0</div><div class="l">Best</div></div>
+    <div class="stat"><div class="v" style="color:${ch>=0?'var(--good)':'var(--warn)'}">0%</div><div class="l">Growth</div></div>`;
+  const vs=st.querySelectorAll('.v');
+  animNum(vs[0], first, {dec: Number.isInteger(first)?0:1});
+  animNum(vs[1], last, {dec: Number.isInteger(last)?0:1});
+  animNum(vs[2], best, {dec: Number.isInteger(best)?0:1});
+  animNum(vs[3], ch, {pre: ch>=0?'+':'', suf:'%'});
 }
 
 /* ================= goals ================= */
@@ -1598,7 +1605,23 @@ function lineChart(id, points, height){
   ctx.fillStyle=accent(); points.forEach((p,i)=>{ ctx.beginPath(); ctx.arc(X(i),Y(p.v),3,0,7); ctx.fill(); });
   const last=points[points.length-1]; ctx.fillStyle=cInk(); ctx.font='bold 12px Inter,sans-serif'; ctx.textAlign='left'; ctx.fillText(last.v+' kg', Math.min(X(points.length-1)+8,W-48), Y(last.v)-8);
 }
-function drawRadar(id, axes, vals, color){
+/* ---- data-viz motion helpers ---- */
+function prefersReduced(){ return window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches; }
+function animNum(el, to, opt){
+  if(!el) return; opt=opt||{};
+  const dur=opt.dur||700, dec=opt.dec||0, suf=opt.suf||'', pre=opt.pre||'', fmt=opt.fmt;
+  const render=v=>{ el.innerHTML = pre + (fmt?fmt(v):(dec?(+v).toFixed(dec):Math.round(v))) + suf; };
+  if(prefersReduced() || !isFinite(to)){ render(to); return; }
+  const start=performance.now();
+  (function step(t){ const k=Math.min(1,(t-start)/dur); const e=1-Math.pow(1-k,3); render(to*e); if(k<1) requestAnimationFrame(step); else render(to); })(performance.now());
+}
+function animRadar(id, axes, vals, color){
+  if(prefersReduced()){ drawRadar(id, axes, vals, color, 1); return; }
+  const start=performance.now();
+  (function step(t){ const k=Math.min(1,(t-start)/560); const e=1-Math.pow(1-k,3); drawRadar(id, axes, vals, color, e); if(k<1) requestAnimationFrame(step); })(performance.now());
+}
+function drawRadar(id, axes, vals, color, scale){
+  scale = (scale==null)?1:scale;
   const c=setupCanvas(id,260); if(!c) return; const {ctx,W,H}=c;
   const cx=W/2, cy=H/2+4, R=Math.min(W/2,H/2)-36; const N=axes.length, ang=i=>-Math.PI/2+i*2*Math.PI/N;
   const max=Math.max(1, ...axes.map(a=>vals[a]||0));
@@ -1607,9 +1630,9 @@ function drawRadar(id, axes, vals, color){
   ctx.fillStyle=cFaint(); ctx.font='10px Inter,sans-serif';
   axes.forEach((g,i)=>{ const a=ang(i), x=cx+Math.cos(a)*R, y=cy+Math.sin(a)*R; ctx.strokeStyle=cGrid(); ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x,y); ctx.stroke(); const lx=cx+Math.cos(a)*(R+15), ly=cy+Math.sin(a)*(R+13); ctx.textAlign=Math.abs(Math.cos(a))<.35?'center':(Math.cos(a)>0?'left':'right'); ctx.fillText(g, lx, ly+3); });
   if(!axes.some(a=>(vals[a]||0)>0)){ emptyMsg(ctx,W,H); return; }
-  ctx.beginPath(); axes.forEach((g,i)=>{ const a=ang(i), rr=R*((vals[g]||0)/max), x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr; i?ctx.lineTo(x,y):ctx.moveTo(x,y);}); ctx.closePath();
+  ctx.beginPath(); axes.forEach((g,i)=>{ const a=ang(i), rr=R*((vals[g]||0)/max)*scale, x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr; i?ctx.lineTo(x,y):ctx.moveTo(x,y);}); ctx.closePath();
   ctx.fillStyle=`rgba(${accentRGB()},.18)`; ctx.fill(); ctx.strokeStyle=color; ctx.lineWidth=1.8; ctx.stroke();
-  ctx.fillStyle=color; axes.forEach((g,i)=>{ const a=ang(i), rr=R*((vals[g]||0)/max), x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr; ctx.beginPath(); ctx.arc(x,y,2.6,0,7); ctx.fill(); });
+  ctx.fillStyle=color; axes.forEach((g,i)=>{ const a=ang(i), rr=R*((vals[g]||0)/max)*scale, x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr; ctx.beginPath(); ctx.arc(x,y,2.6,0,7); ctx.fill(); });
 }
 
 /* ================= level / rank / XP ================= */
@@ -1636,7 +1659,9 @@ function renderAvatar(){
   const _ptb=document.getElementById('ptbName'); if(_ptb) _ptb.textContent=avName();
   renderProfileStats(); renderAppearance(); renderAchievements(); renderDevPanel();
   const dl=devLevel();
-  document.getElementById('avLevelNum').textContent=dl;
+  animNum(document.getElementById('avLevelNum'), dl, {dur:800});
+  const ringEl=document.querySelector('.av-hero .ring');
+  if(ringEl && !prefersReduced()){ ringEl.classList.remove('lvpulse'); setTimeout(()=>{ ringEl.classList.add('lvpulse'); setTimeout(()=>ringEl.classList.remove('lvpulse'),460); },800); }
   /* ring */
   const circ=2*Math.PI*42;
   const arc=document.getElementById('ringArc');
@@ -1650,7 +1675,7 @@ function renderAvatar(){
     document.getElementById('avRankNext').textContent='Endurance mode — run tracking coming soon';
     document.getElementById('radarHint').textContent='Endurance profile — log runs to build it';
     const vals={}; END_AXES.forEach(a=>vals[a]=0);
-    drawRadar('chRadar', END_AXES, vals, accent());
+    animRadar('chRadar', END_AXES, vals, accent());
   } else {
     rankCard.style.display='';
     const rk=rankFor(dl);
@@ -1659,7 +1684,7 @@ function renderAvatar(){
     document.getElementById('avRankNext').textContent = rk.next ? `${fmtK(Math.max(0,xpToReach(rk.nextLvl)-li.xp))} XP to ${rk.next}` : 'Immortal — max rank reached';
     document.getElementById('radarHint').textContent='Sets trained per muscle group — all time';
     const counts={}; GROUPS.forEach(g=>counts[g]=0); S().logs.forEach(l=>{ const g=groupOf(l.ex); if(g&&counts[g]!=null) counts[g]+=(l.sets||1); });
-    drawRadar('chRadar', GROUPS, counts, accent());
+    animRadar('chRadar', GROUPS, counts, accent());
   }
 }
 
@@ -1679,9 +1704,9 @@ function avStats(){
 }
 function renderProfileStats(){
   const st=avStats();
-  const a=document.getElementById('stStreak'); if(a) a.innerHTML=st.streak+'<small> d</small>';
-  const b=document.getElementById('stSessions'); if(b) b.textContent=st.sessions;
-  const c=document.getElementById('stVolume'); if(c) c.innerHTML=fmtVol(st.vol)+'<small> kg</small>';
+  animNum(document.getElementById('stStreak'), st.streak, {suf:'<small> d</small>'});
+  animNum(document.getElementById('stSessions'), st.sessions, {});
+  animNum(document.getElementById('stVolume'), st.vol, {fmt:fmtVol, suf:'<small> kg</small>'});
 }
 function pickAccent(i){ db.dev=db.dev||{}; db.dev.color=i; save(); applyColors(); renderAvatar(); }
 function renderAppearance(){
