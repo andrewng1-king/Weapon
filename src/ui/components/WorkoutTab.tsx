@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, type CSSProperties } from 'react';
+import { useState, useEffect, useRef, type CSSProperties } from 'react';
 import { useWeapon, useUIStore } from '@/hooks';
 import { exercisesFor, GROUPS, GROUP_COLORS, groupOf } from '@/domain/catalogue';
 import { todayStr, fmtDate, uid } from '@/domain/format';
@@ -8,21 +8,21 @@ import type { Group, PresetExercise } from '@/domain/types';
 import { createLogEntry, isLoggedToday } from '@/application/workoutUsecases';
 
 const nf = (n: number) => Math.round(n).toLocaleString('en-US');
+const RING_CIRC = 125.66; // 2π × 20
 
-/** Honour the OS "reduce motion" setting before playing log celebrations. */
 function prefersReduced() {
   return typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 }
-/** Short haptic burst (legacy parity); no-op where unsupported. */
 function haptic(pattern: number | number[]) {
   if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate(pattern);
 }
 
 const CheckGlyph = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 13l4 4L19 7" />
+  </svg>
 );
 
-/** Barbell glyph used across the reskinned cards (matches the Hybrid design). */
 function BarbellIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -31,7 +31,6 @@ function BarbellIcon() {
   );
 }
 
-/** Colour-tinted modality tile; colour comes from the group via the --gc var. */
 function MTile({ color, sm }: { color?: string; sm?: boolean }) {
   return (
     <div className={`mtile${sm ? ' sm' : ''}`} style={{ ['--gc' as string]: color ?? 'var(--accent)' } as CSSProperties}>
@@ -44,32 +43,26 @@ export function WorkoutTab() {
   const { state, logExercise, deleteLog, removeExercise } = useWeapon();
   const { group, setGroup, searchOpen, searchQuery, toggleSearch, setSearchQuery, vals, setVal } = useUIStore();
   const setModal = useUIStore((s) => s.setModal);
+
   const [groupMenuOpen, setGroupMenuOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState<string | null>(null);
   const [wkPage, setWkPage] = useState<'workout' | 'history'>('workout');
-  // transient name of the card mid log-celebration (drives swipe + wipe + stamp)
   const [justLogged, setJustLogged] = useState<string | null>(null);
-  // click-selected card highlight — persists until another card or empty space is clicked
-  const [selectedEx, setSelectedEx] = useState<string | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [displayVol, setDisplayVol] = useState(0);
+  const [floaters, setFloaters] = useState<{ id: string; text: string }[]>([]);
+  const volTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // legacy "click anywhere selects this card, click empty space clears it" behaviour
+  // cleanup timer on unmount
   useEffect(() => {
-    function onDocClick(e: MouseEvent) {
-      const card = (e.target as HTMLElement)?.closest?.('.ex') as HTMLElement | null;
-      if (card && card.dataset.ex) {
-        setSelectedEx(card.dataset.ex);
-      } else {
-        setSelectedEx(null);
-      }
-    }
-    document.addEventListener('click', onDocClick);
-    return () => document.removeEventListener('click', onDocClick);
+    return () => { if (volTimerRef.current) clearInterval(volTimerRef.current); };
   }, []);
 
   if (!state) return null;
   const bucket = state[state.mode];
   const today = todayStr();
 
+  // exercise list (unchanged logic)
   let exercises: (PresetExercise & { group?: Group })[] = [];
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
@@ -84,33 +77,83 @@ export function WorkoutTab() {
     exercises = exercisesFor(group, bucket);
   }
 
-  const firstUnlogged = exercises.find((e) => !isLoggedToday(bucket, e.n));
+  // split into active / logged
+  const activeExercises = exercises.filter((e) => !isLoggedToday(bucket, e.n));
+  const loggedExercises = exercises.filter((e) => isLoggedToday(bucket, e.n));
+  const total = exercises.length;
+  const loggedCount = loggedExercises.length;
+  const pct = total > 0 ? (loggedCount / total) * 100 : 0;
+  const remaining = total - loggedCount;
+  const ringOffset = RING_CIRC * (1 - loggedCount / Math.max(1, total));
 
-  // ===== Today hero summary (mirrors the live-session hero block) =====
+  // today's volume from real data
   const todayLogs = bucket.logs.filter((l) => l.date === today);
   const todayVol = todayLogs.reduce((s, l) => s + l.kg * l.reps * l.sets, 0);
-  const todaySets = todayLogs.reduce((s, l) => s + l.sets, 0);
-  const todayExercises = new Set(todayLogs.map((l) => l.ex)).size;
+
+  // sync displayVol to real data when bucket updates (no active tween)
+  useEffect(() => {
+    if (!volTimerRef.current) setDisplayVol(todayVol);
+  }, [todayVol]);
+
+  // which card is focused (expanded)
+  const focusedId = (() => {
+    if (expandedId && activeExercises.some((e) => e.n === expandedId)) return expandedId;
+    return activeExercises[0]?.n ?? null;
+  })();
+
+  // reset focus when group/search changes
+  useEffect(() => {
+    setExpandedId(null);
+  }, [group, searchQuery]);
+
   const weekAgo = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10);
-  const weekVol = bucket.logs
-    .filter((l) => l.date >= weekAgo)
-    .reduce((s, l) => s + l.kg * l.reps * l.sets, 0);
+  const weekVol = bucket.logs.filter((l) => l.date >= weekAgo).reduce((s, l) => s + l.kg * l.reps * l.sets, 0);
+
+  function tweenVol(target: number) {
+    if (prefersReduced()) { setDisplayVol(target); return; }
+    if (volTimerRef.current) clearInterval(volTimerRef.current);
+    const from = displayVol;
+    const start = Date.now();
+    const dur = 650;
+    volTimerRef.current = setInterval(() => {
+      const p = Math.min(1, (Date.now() - start) / dur);
+      const ease = 1 - Math.pow(1 - p, 3);
+      setDisplayVol(Math.round(from + (target - from) * ease));
+      if (p >= 1) { clearInterval(volTimerRef.current!); volTimerRef.current = null; }
+    }, 16);
+  }
 
   function handleLog(ex: PresetExercise) {
     const v = vals[ex.n] ?? { kg: ex.start, reps: 10 };
     const done = isLoggedToday(bucket, ex.n);
+
     if (done) {
       haptic(18);
       const todayLog = bucket.logs.find((l) => l.ex === ex.n && l.date === today);
       if (todayLog) deleteLog(todayLog.id);
+      tweenVol(Math.max(0, todayVol - v.kg * v.reps));
     } else {
       haptic([12, 28, 12]);
-      if (!prefersReduced()) {
-        setJustLogged(ex.n);
-        window.setTimeout(() => setJustLogged((cur) => (cur === ex.n ? null : cur)), 700);
-      }
       const log = createLogEntry(v.kg, v.reps, ex.n);
       logExercise(log);
+
+      if (!prefersReduced()) {
+        // volt wipe + stamp
+        setJustLogged(ex.n);
+        window.setTimeout(() => setJustLogged((cur) => (cur === ex.n ? null : cur)), 700);
+        // +XP floater
+        const xp = 18 + Math.round((v.kg * v.reps) / 35);
+        const fid = 'f' + Date.now();
+        setFloaters((fs) => [...fs, { id: fid, text: `+${xp} XP` }]);
+        setTimeout(() => setFloaters((fs) => fs.filter((f) => f.id !== fid)), 900);
+      }
+
+      // advance focus to next unlogged
+      const next = activeExercises.find((e) => e.n !== ex.n);
+      if (next) setExpandedId(next.n);
+
+      // animate volume
+      tweenVol(todayVol + v.kg * v.reps);
     }
   }
 
@@ -151,43 +194,111 @@ export function WorkoutTab() {
           )}
 
           <main>
-            <div className="wk-hero">
-              <div className="wh-eyebrow">Today · {group}</div>
-              <div className="wh-big">{nf(todayVol)}<small> kg volume</small></div>
-              <div className="wh-stats">
-                <div className="wh-stat"><div className="wv">{todaySets}</div><div className="wl">Sets</div></div>
-                <div className="wh-stat"><div className="wv">{todayExercises}</div><div className="wl">Exercises</div></div>
-                <div className="wh-stat"><div className="wv">{nf(weekVol)}</div><div className="wl">7-day kg</div></div>
+            {/* ── SESSION HERO ── */}
+            <div className="wk-session-hero">
+              <div className="wsh-ring-wrap">
+                <svg viewBox="0 0 56 56" width="60" height="60">
+                  <circle cx="28" cy="28" r="20" fill="none" stroke="rgba(255,255,255,0.09)" strokeWidth="6" />
+                  <circle
+                    cx="28" cy="28" r="20"
+                    fill="none" stroke="var(--accent)" strokeWidth="6"
+                    strokeLinecap="round"
+                    strokeDasharray={RING_CIRC}
+                    strokeDashoffset={ringOffset}
+                    style={{ transition: 'stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)', transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
+                  />
+                </svg>
+                <div className="wsh-ring-label">{loggedCount}/{total}</div>
+              </div>
+              <div className="wsh-info">
+                <div className="wsh-vol-row">
+                  <span className="wsh-num">{nf(displayVol)}</span>
+                  <span className="wsh-unit"> kg today</span>
+                  {floaters.map((f) => (
+                    <span key={f.id} className="xp-floater">{f.text}</span>
+                  ))}
+                </div>
+                <div className="wsh-track"><i style={{ width: `${pct}%` }} /></div>
+                <div className="wsh-remain">
+                  {remaining > 0 ? `${remaining} lift${remaining !== 1 ? 's' : ''} left · 7-day ${nf(weekVol)} kg` : '🎯 Session complete'}
+                </div>
               </div>
             </div>
+
+            <div className="eb" style={{ margin: '6px 2px 10px' }}>
+              Today · {loggedCount} of {total} logged
+            </div>
+
             <div>
-              {exercises.map((ex) => {
-                const done = isLoggedToday(bucket, ex.n);
-                const todayCount = bucket.logs.filter((l) => l.ex === ex.n && l.date === today).length;
-                const isPrimary = ex === firstUnlogged;
-                const isSelected = selectedEx === ex.n;
+              {/* ── ACTIVE EXERCISES ── */}
+              {activeExercises.map((ex) => {
+                const isFocused = !searchQuery && ex.n === focusedId;
                 const isAnimating = justLogged === ex.n;
                 const v = vals[ex.n] ?? { kg: ex.start, reps: 10 };
                 const lastLog = bucket.logs.filter((l) => l.ex === ex.n).slice(-1)[0];
                 const isDetailOpen = openDetail === ex.n;
 
+                if (!isFocused) {
+                  // compact row
+                  return (
+                    <div
+                      key={ex.n}
+                      className={`ex-compact${isAnimating ? ' logged-anim-compact' : ''}`}
+                      onClick={() => setExpandedId(ex.n)}
+                    >
+                      <MTile color={GROUP_COLORS[ex.group ?? group]} sm />
+                      <div className="ex-txt">
+                        <div className="ex-name">
+                          {ex.n}
+                          {searchQuery && ex.group && <span className="search-grouptag">{ex.group}</span>}
+                        </div>
+                        {lastLog && <div className="ex-target">last · {lastLog.kg} kg × {lastLog.reps}</div>}
+                      </div>
+                      <button
+                        className="logbtn-sm"
+                        onClick={(e) => { e.stopPropagation(); handleLog(ex); }}
+                        aria-label={`Log ${ex.n}`}
+                      >
+                        Log
+                      </button>
+                    </div>
+                  );
+                }
+
+                // focused (expanded) card
+                const deltaKg = lastLog ? Math.round((v.kg - lastLog.kg) * 2) / 2 : 0;
+                const hasDelta = !!lastLog;
+                const deltaClass = deltaKg > 0 ? 'up' : deltaKg < 0 ? 'down' : 'flat';
+                const deltaStr = deltaKg > 0
+                  ? `▲ +${deltaKg} kg vs last`
+                  : deltaKg < 0
+                    ? `▼ ${Math.abs(deltaKg)} kg vs last`
+                    : '→ same as last';
+
                 return (
                   <div
                     key={ex.n}
                     data-ex={ex.n}
-                    className={`ex${isPrimary ? ' primary' : ''}${isSelected ? ' selected' : ''}${isAnimating ? ' logged-anim' : ''}`}
+                    className={`ex ex-focused${isAnimating ? ' logged-anim' : ''}`}
                   >
                     <span className="ex-wipe" aria-hidden="true" />
                     <span className="ex-stamp" aria-hidden="true">Logged</span>
+
                     <div className="ex-head" onClick={() => setOpenDetail(isDetailOpen ? null : ex.n)}>
                       <MTile color={GROUP_COLORS[ex.group ?? group]} />
                       <div className="ex-txt">
-                        <div className="ex-name">{ex.n}{searchQuery && ex.group && <span className="search-grouptag">{ex.group}</span>}</div>
+                        <div className="ex-name">
+                          {ex.n}
+                          {searchQuery && ex.group && <span className="search-grouptag">{ex.group}</span>}
+                        </div>
                         <div className="ex-target">{ex.t}</div>
-                        {lastLog && <div className="lastlog">Last: <b>{lastLog.kg}kg × {lastLog.reps}</b></div>}
                       </div>
-                      {done ? <span className="pill-done">Logged{todayCount > 1 ? ` ×${todayCount}` : ''}</span> : <span className="chev">›</span>}
+                      <span className="chev">›</span>
                     </div>
+
+                    {hasDelta && (
+                      <div className={`ex-delta-chip ${deltaClass}`}>{deltaStr}</div>
+                    )}
 
                     <div className="controls">
                       <div className="stepper">
@@ -207,19 +318,13 @@ export function WorkoutTab() {
                         <button onClick={() => setVal(ex.n, v.kg, v.reps + 1)}>+</button>
                       </div>
                       <button
-                        className={`logbtn${done && !isAnimating ? ' is-done' : ''}${isAnimating ? ' swipe done' : ''}`}
+                        className={`logbtn${isAnimating ? ' swipe done' : ''}`}
                         onClick={() => handleLog(ex)}
                         aria-label="Log set"
                       >
-                        {done && !isAnimating ? (
-                          <CheckGlyph />
-                        ) : (
-                          <>
-                            <span className="lb-fill" aria-hidden="true" />
-                            <span className="lb-ic lb-log">Log</span>
-                            <span className="lb-ic lb-chk" aria-hidden="true"><CheckGlyph /></span>
-                          </>
-                        )}
+                        <span className="lb-fill" aria-hidden="true" />
+                        <span className="lb-ic lb-log">Log</span>
+                        <span className="lb-ic lb-chk" aria-hidden="true"><CheckGlyph /></span>
                       </button>
                     </div>
 
@@ -237,8 +342,36 @@ export function WorkoutTab() {
                 );
               })}
 
+              {/* ── DONE GROUP ── */}
+              {loggedExercises.length > 0 && (
+                <div className="done-group">
+                  <div className="done-group-hdr">Done · {loggedExercises.length}</div>
+                  {loggedExercises.map((ex) => {
+                    const todayLog = bucket.logs.filter((l) => l.ex === ex.n && l.date === today).slice(-1)[0];
+                    const todayCount = bucket.logs.filter((l) => l.ex === ex.n && l.date === today).length;
+                    return (
+                      <div key={ex.n} className="done-row">
+                        <div className="done-check"><CheckGlyph /></div>
+                        <div className="ex-txt">
+                          <div className="ex-name">{ex.n}</div>
+                        </div>
+                        <div className="done-meta">
+                          {todayLog ? `${todayLog.kg} kg × ${todayLog.reps}${todayCount > 1 ? ` ×${todayCount}` : ''}` : ''}
+                        </div>
+                        <button className="del" onClick={() => {
+                          const log = bucket.logs.find((l) => l.ex === ex.n && l.date === today);
+                          if (log) deleteLog(log.id);
+                        }}>✕</button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
               <button className="addcard" onClick={() => setModal('addExercise')}>
-                <span className="ac-plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg></span>
+                <span className="ac-plus">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>
+                </span>
                 Add exercise to {group}
               </button>
             </div>

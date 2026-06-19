@@ -198,6 +198,153 @@ select.exsel{width:100%;background:var(--panel-2);border:1px solid var(--line);c
 .rec-row .rx-ex{font-weight:600;color:var(--ink);}
 .rec-row .rx-meta{font-size:.78rem;color:var(--faint);}
 
+/* =======================================================================
+   UI / LAYOUT / MOTION PASS — WorkoutTab improvements
+   ======================================================================= */
+
+/* ── Session hero (replaces wk-hero) ── */
+.wk-session-hero{
+  display:flex;align-items:center;gap:16px;
+  background:linear-gradient(150deg,var(--panel),#121212);
+  border:1px solid var(--line);border-radius:20px;
+  padding:15px 16px;margin:0 0 6px;
+  position:relative;overflow:visible;
+}
+.wsh-ring-wrap{
+  position:relative;width:60px;height:60px;flex:none;
+}
+.wsh-ring-label{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--num);font-weight:800;font-size:.92rem;color:var(--ink);
+  pointer-events:none;
+}
+.wsh-info{flex:1;min-width:0;}
+.wsh-vol-row{
+  display:flex;align-items:baseline;gap:5px;position:relative;
+}
+.wsh-num{
+  font-family:var(--num);font-weight:800;font-size:1.9rem;
+  letter-spacing:-.02em;color:var(--ink);line-height:1;
+}
+.wsh-unit{font-size:.74rem;color:var(--muted);font-weight:600;}
+.wsh-track{
+  height:5px;border-radius:99px;background:rgba(255,255,255,.08);
+  margin-top:10px;overflow:hidden;
+}
+.wsh-track i{
+  display:block;height:100%;border-radius:99px;
+  background:var(--accent);
+  transition:width .6s var(--e-out);
+}
+.wsh-remain{font-size:.7rem;color:var(--faint);margin-top:5px;}
+
+/* +XP floater token */
+.xp-floater{
+  position:absolute;left:28px;top:0;
+  font-family:var(--num);font-weight:800;font-size:.9rem;color:var(--accent);
+  animation:floatup .9s var(--e-out) forwards;
+  pointer-events:none;z-index:10;white-space:nowrap;
+}
+@keyframes floatup{
+  0%{opacity:0;transform:translateY(4px) scale(.8)}
+  22%{opacity:1;transform:translateY(-3px) scale(1)}
+  100%{opacity:0;transform:translateY(-32px) scale(1)}
+}
+
+/* ── Focused (expanded) card ── */
+.ex.ex-focused{
+  border-color:rgba(var(--accent-rgb),.26);
+  animation:promote .32s var(--e-out);
+}
+@keyframes promote{
+  from{opacity:.35;transform:scale(.975)}
+  to{opacity:1;transform:scale(1)}
+}
+
+/* ── Delta chip (progression cue) ── */
+.ex-delta-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:.78rem;font-weight:600;border-radius:99px;
+  padding:3px 10px;margin:9px 0 2px;
+}
+.ex-delta-chip.up{color:var(--good);background:rgba(61,220,151,.1);}
+.ex-delta-chip.down{color:var(--warn);background:rgba(224,96,58,.1);}
+.ex-delta-chip.flat{color:var(--muted);background:rgba(255,255,255,.05);}
+
+/* ── Compact (collapsed) card ── */
+.ex-compact{
+  display:flex;align-items:center;gap:11px;
+  background:var(--panel);border:1px solid rgba(255,255,255,.05);
+  border-radius:14px;padding:11px 13px;margin-bottom:10px;
+  cursor:pointer;
+  transition:background var(--t-micro) var(--e-out),
+             border-color var(--t-micro) var(--e-out);
+}
+.ex-compact:active{background:var(--panel-2);}
+.ex-compact:hover{border-color:var(--line);}
+.ex-compact .ex-name{font-size:.92rem;font-weight:600;}
+.ex-compact .ex-target{font-size:.72rem;color:var(--faint);margin-top:2px;}
+.ex-compact .ex-txt{flex:1;min-width:0;overflow:hidden;}
+
+/* inline Log button for compact rows */
+.logbtn-sm{
+  flex:none;border-radius:10px;
+  border:1px solid rgba(var(--accent-rgb),.4);
+  background:none;color:var(--accent);
+  font-family:var(--sans);font-weight:700;font-size:.82rem;
+  padding:7px 16px;cursor:pointer;
+  transition:background var(--t-micro) var(--e-out),
+             transform var(--t-press) var(--e-out);
+}
+.logbtn-sm:active{
+  background:rgba(var(--accent-rgb),.12);
+  transform:scale(.93);
+}
+
+/* ── Done group ── */
+.done-group{margin-top:8px;}
+.done-group-hdr{
+  display:flex;align-items:center;gap:10px;
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);font-weight:600;padding:14px 2px 8px;
+}
+.done-group-hdr::after{
+  content:'';flex:1;height:1px;background:var(--line);
+}
+.done-row{
+  display:flex;align-items:center;gap:11px;
+  background:rgba(var(--accent-rgb),.04);
+  border:1px solid rgba(var(--accent-rgb),.12);
+  border-radius:13px;padding:10px 12px;margin-bottom:8px;
+  animation:donein .36s var(--e-out);
+}
+@keyframes donein{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:none}
+}
+.done-check{
+  width:26px;height:26px;flex:none;border-radius:50%;
+  background:rgba(var(--accent-rgb),.14);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+}
+.done-check svg{width:13px;height:13px;}
+.done-row .ex-txt{flex:1;min-width:0;overflow:hidden;}
+.done-row .ex-name{font-size:.9rem;font-weight:600;color:var(--muted);}
+.done-meta{
+  font-family:var(--num);font-weight:700;font-size:.84rem;
+  color:var(--ink);white-space:nowrap;margin-left:auto;padding-right:4px;
+}
+
+/* @media: reduce-motion collapses celebrations to fades */
+@media(prefers-reduced-motion:reduce){
+  .xp-floater,.ex.logged-anim .ex-wipe,.ex.logged-anim .ex-stamp{
+    animation:none!important;
+  }
+  .done-row{animation:none;}
+  .ex.ex-focused{animation:none;}
+  .wsh-track i{transition:none;}
+}
+
 /* ===== goals ===== */
 .goal-week{display:flex;justify-content:space-between;gap:3px;margin-top:10px;}
 .goal-day{flex:1;text-align:center;cursor:pointer;}
