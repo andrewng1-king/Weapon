@@ -607,6 +607,96 @@ body.dragging-active{-webkit-user-select:none;user-select:none;}
 .speeddial.edge-right{align-items:flex-end;}
 .speeddial.edge-right .sd-options{transform-origin:bottom right;align-items:flex-end;}
 .speeddial.edge-right .sd-opt{flex-direction:row-reverse;padding:7px 7px 7px 16px;}
+/* ================= COMPETE hub (social / throwdown MVP) ================= */
+.compete{position:fixed;inset:0;z-index:115;background:var(--page);display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateY(14px);transition:opacity var(--t-screen),transform var(--t-screen) var(--e-out);max-width:var(--app);margin:0 auto;left:0;right:0;}
+.compete.open{opacity:1;pointer-events:auto;transform:translateY(0);}
+.cp-head{display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 12px) 16px 10px;border-bottom:1px solid var(--line);background:var(--nav-bg);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);position:sticky;top:0;z-index:5;}
+.cp-head h2{flex:1;margin:0;font-family:var(--num);font-weight:800;font-size:1.12rem;letter-spacing:.01em;color:var(--ink);}
+.cp-x{background:none;border:none;color:var(--muted);cursor:pointer;padding:6px;display:flex;}
+.cp-x svg{width:22px;height:22px;}
+.cp-seg{display:flex;gap:4px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--line);scrollbar-width:none;}
+.cp-seg::-webkit-scrollbar{display:none;}
+.cp-seg button{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);color:var(--muted);font-size:.72rem;font-weight:600;letter-spacing:.02em;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s;}
+.cp-seg button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+.cp-body{flex:1;overflow-y:auto;padding:16px 14px calc(28px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;}
+.cp-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;}
+.cp-card h3{margin:0 0 4px;font-size:.95rem;font-weight:700;color:var(--ink);}
+.cp-card .cp-sub{font-size:.74rem;color:var(--faint);margin-bottom:10px;}
+.cp-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--accent);color:var(--accent-ink);border:none;border-radius:12px;font-weight:700;font-size:.82rem;padding:12px 16px;cursor:pointer;width:100%;}
+.cp-btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--hair);}
+.cp-btn.sm{width:auto;padding:9px 14px;font-size:.76rem;border-radius:10px;}
+.cp-btnrow{display:flex;gap:8px;}
+.ws-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;background:radial-gradient(120% 90% at 50% 0%,rgba(var(--accent-rgb),.14),var(--panel) 70%);border:1px solid var(--line);border-radius:22px;padding:22px 16px;margin-bottom:14px;}
+.ws-ring{position:relative;width:168px;height:168px;}
+.ws-ring svg{transform:rotate(-90deg);}
+.ws-ring .ws-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ws-ring .ws-num{font-family:var(--num);font-weight:800;font-size:3.1rem;line-height:1;color:var(--ink);}
+.ws-ring .ws-cap{font-size:.62rem;letter-spacing:.16em;color:var(--faint);text-transform:uppercase;margin-top:4px;}
+.ws-split{display:flex;gap:10px;width:100%;margin-top:6px;}
+.ws-split>div{flex:1;background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:12px 8px;}
+.ws-split b{display:block;font-family:var(--num);font-weight:700;font-size:1.5rem;color:var(--ink);line-height:1;}
+.ws-split span{display:block;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-top:5px;font-weight:600;}
+.ws-part{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line-2);}
+.ws-part:first-child{border-top:none;}
+.ws-part .wp-name{flex:1;font-size:.82rem;color:var(--ink);}
+.ws-part .wp-bar{flex:0 0 84px;height:6px;border-radius:3px;background:var(--track);overflow:hidden;}
+.ws-part .wp-bar i{display:block;height:100%;background:var(--accent);border-radius:3px;}
+.ws-part .wp-sc{flex:0 0 30px;text-align:right;font-family:var(--num);font-weight:700;font-size:.82rem;color:var(--muted);}
+.cp-note{font-size:.7rem;color:var(--faint);line-height:1.5;margin-top:8px;}
+.lb-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.lb-filters select{flex:1;min-width:90px;background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 10px;font-size:.76rem;font-family:inherit;}
+.lb-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--line);margin-bottom:7px;}
+.lb-row.me{border-color:var(--accent);background:rgba(var(--accent-rgb),.07);}
+.lb-rank{flex:0 0 26px;text-align:center;font-family:var(--num);font-weight:800;font-size:1.02rem;color:var(--muted);}
+.lb-rank.g1{color:#e8c969;}
+.lb-av{flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:var(--panel-2);border:1px solid var(--hair);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--muted);overflow:hidden;}
+.lb-av img{width:100%;height:100%;object-fit:cover;}
+.lb-main{flex:1;min-width:0;}
+.lb-name{font-size:.84rem;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px;}
+.lb-meta{font-size:.68rem;color:var(--faint);margin-top:2px;}
+.lb-score{font-family:var(--num);font-weight:700;font-size:.96rem;color:var(--ink);}
+.cp-badge{font-size:.56rem;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:5px;text-transform:uppercase;}
+.cp-badge.rx{background:rgba(var(--accent-rgb),.18);color:var(--accent);}
+.cp-badge.sc{background:var(--track);color:var(--muted);}
+.cp-badge.ok{background:rgba(80,180,120,.18);color:#5cba7d;}
+.fd-item{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-bottom:10px;}
+.fd-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.fd-when{margin-left:auto;font-size:.66rem;color:var(--faint);}
+.fd-body{font-size:.84rem;color:var(--ink);line-height:1.45;}
+.fd-body .fd-hl{color:var(--accent);font-weight:700;}
+.fd-acts{display:flex;gap:18px;margin-top:10px;padding-top:9px;border-top:1px solid var(--line-2);}
+.fd-acts button{background:none;border:none;color:var(--muted);font-size:.74rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0;}
+.fd-acts button.liked{color:var(--accent);}
+.fd-acts svg{width:16px;height:16px;}
+.fd-comments{margin-top:8px;display:flex;flex-direction:column;gap:6px;}
+.fd-cm{font-size:.76rem;color:var(--muted);}
+.fd-cm b{color:var(--ink);font-weight:600;}
+.fd-cbox{display:flex;gap:7px;margin-top:8px;}
+.fd-cbox input{flex:1;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:8px 11px;font-size:.78rem;font-family:inherit;}
+.crew-card{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-bottom:9px;}
+.crew-logo{flex:0 0 44px;width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,rgba(var(--accent-rgb),.3),var(--panel-2));display:flex;align-items:center;justify-content:center;font-family:var(--num);font-weight:800;font-size:1.1rem;color:var(--accent);}
+.crew-main{flex:1;min-width:0;}
+.crew-name{font-size:.88rem;font-weight:700;color:var(--ink);}
+.crew-meta{font-size:.68rem;color:var(--faint);margin-top:2px;}
+.td-stations{list-style:none;margin:10px 0 0;padding:0;}
+.td-stations li{display:flex;align-items:center;gap:11px;padding:9px 0;border-top:1px solid var(--line-2);font-size:.84rem;color:var(--ink);}
+.td-stations li:first-child{border-top:none;}
+.td-stations .td-n{flex:0 0 22px;height:22px;border-radius:50%;background:var(--track);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;}
+.cp-field{margin-bottom:11px;}
+.cp-field label{display:block;font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:5px;}
+.cp-field input,.cp-field select{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:11px;color:var(--ink);padding:11px 12px;font-size:.86rem;font-family:inherit;}
+.cp-divrow{display:flex;gap:8px;}
+.cp-divrow>div{flex:1;}
+.cp-empty{text-align:center;color:var(--faint);font-size:.8rem;padding:26px 16px;}
+#shareCardWrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+#shareCardCanvas{width:100%;max-width:320px;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+.home-compete{background:linear-gradient(135deg,rgba(var(--accent-rgb),.16),var(--panel) 72%);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;cursor:pointer;}
+.home-compete .hc-score{flex:0 0 auto;font-family:var(--num);font-weight:800;font-size:2.1rem;color:var(--accent);line-height:1;}
+.home-compete .hc-mid{flex:1;min-width:0;}
+.home-compete .hc-lab{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:600;}
+.home-compete .hc-name{font-size:.92rem;font-weight:700;color:var(--ink);margin-top:1px;}
+.home-compete .hc-sub{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.home-compete .hc-go{flex:0 0 auto;color:var(--muted);}
 </style>
 </head>
 <body data-sport="gym">
@@ -811,6 +901,33 @@ body.dragging-active{-webkit-user-select:none;user-select:none;}
     <button class="rf-tool" type="button" onclick="openRecEx()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 9v6M5.5 7v10M18.5 7v10M22 9v6M5.5 12h13"/></svg>Log exercise</button>
   </div>
   <button class="rf-stop" type="button" onclick="stopRecord()" aria-label="Stop & finish"></button>
+</div>
+
+<!-- COMPETE hub overlay -->
+<div class="compete" id="competeScreen">
+  <div class="cp-head">
+    <button class="cp-x" type="button" onclick="closeCompete()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <h2 id="cpTitle">Compete</h2>
+  </div>
+  <div class="cp-seg" id="cpSeg"></div>
+  <div class="cp-body" id="cpBody"></div>
+</div>
+
+<!-- log throwdown / submit score modal -->
+<div class="modal-bg" id="tdModal" onclick="if(event.target===this)closeTd()">
+  <div class="modal" style="max-height:88vh;overflow-y:auto">
+    <h3 id="tdModalTitle">Log Throwdown</h3>
+    <div id="tdModalBody"></div>
+  </div>
+</div>
+
+<!-- shareable result card modal -->
+<div class="modal-bg" id="shareCardModal" onclick="if(event.target===this)closeShareCard()">
+  <div class="modal">
+    <h3>Result card</h3>
+    <div id="shareCardWrap"><canvas id="shareCardCanvas" width="540" height="675"></canvas></div>
+    <div class="mrow"><button class="m-cancel" onclick="closeShareCard()">Close</button><button class="m-save" onclick="downloadShareCard()">Save / Share</button></div>
+  </div>
 </div>
 
 <!-- add exercise modal -->
@@ -1436,7 +1553,8 @@ function toggleSpeedDial(forceClose){
 function sdAction(which){
   toggleSpeedDial(true);
   if(which==='record'){ toggleRecord(); }
-  else { toast(which==='challenges'?'Challenges — coming soon':'Friends — coming soon'); }
+  else if(which==='challenges'){ openCompete('challenges'); }
+  else if(which==='friends'){ openCompete('crews'); }
 }
 document.addEventListener('pointerdown',e=>{
   const sd=document.getElementById('speedDial');
@@ -1541,6 +1659,7 @@ function renderHome(){
       '<div class="hs-card"><b>'+fmtK(st.sessions)+'</b><span>Sessions</span></div>'+
       '<div class="hs-card"><b>'+fmtVol(st.vol)+'</b><span>Volume kg</span></div>'+
     '</div>'+
+    homeCompeteCardHTML()+
     '<div class="card home-today">'+
       '<div class="ht-row"><div><div class="ht-lab">Logged today</div><div class="ht-sub">Sets recorded so far</div></div><div class="ht-num">'+loggedToday+'</div></div>'+
       '<button class="ht-cta" onclick="switchTab(\'workout\')">Start training</button>'+
@@ -1845,6 +1964,7 @@ function logEx(name){
   save();
   if(isPR) toast(`★ New PR · ${name} · ${wlabel}`);
   else toastAction(`Logged ${name} · ${wlabel}`,'Undo',()=>delLog(log.id,true));
+  if(isPR && window.competePostPR) competePostPR(name, wlabel);
   if(isPR && !prefersReduced()){ const c=document.querySelector(`#groupView .ex[data-ex="${attr(name)}"]`); if(c){ c.classList.remove('pr-flash'); void c.offsetWidth; c.classList.add('pr-flash'); } }
   if(m!=='dist'&&m!=='time') startRest(name);
   checkLevelUp(); setTimeout(renderGroup, 980);  // let the slower log sweep finish before the card re-renders
@@ -2505,6 +2625,361 @@ function closeMainMenu(){ const bg=document.getElementById('mainMenuBg'); if(bg)
 function openPlanner(){ const m=document.getElementById('plannerModal'); if(m) m.classList.add('open'); }
 function closePlanner(){ const m=document.getElementById('plannerModal'); if(m) m.classList.remove('open'); }
 
+/* ===================================================================== */
+/* ================= COMPETE — social / throwdown MVP =================== */
+/* ===================================================================== */
+
+/* ---- the signature benchmark workout ---- */
+const WEAPON_THROWDOWN={
+  name:'The Weapon Throwdown', tag:'Signature WOD', cap:20*60, scoreType:'time',
+  blurb:'For time · 20-min cap. The fixed benchmark — every score is comparable.',
+  stations:['1 km Run','50 Wall Balls (9/6 kg)','40 Calorie Row','30 Burpees Over Bar','20 Pull-ups','1 km Run'],
+  scaled:['1 km Run','40 Wall Balls (6/4 kg)','30 Calorie Row','30 Burpees','20 Ring Rows','1 km Run'],
+};
+const AGE_BANDS=[['open','Open'],['35+','35+'],['45+','45+'],['55+','55+']];
+
+/* ---- mock community (so boards/feed feel alive before real multi-user) ---- */
+const MOCK_CREWS=[
+  {id:'forge',     name:'The Forge',     tag:'FG', city:'Eastside',  members:24},
+  {id:'ironworks', name:'Ironworks BC',  tag:'IW', city:'District 1',members:38},
+  {id:'rundown',   name:'Rundown Run Club',tag:'RC',city:'Riverside',members:52},
+];
+const MOCK_ATH=[
+  {id:'m1',name:'Linh Tran',  crew:'forge',    sex:'F',age:'open',rx:true, td:778, ws:79, coachOK:true},
+  {id:'m2',name:'Duc Pham',   crew:'forge',    sex:'M',age:'open',rx:true, td:742, ws:84, coachOK:true},
+  {id:'m3',name:'Mai Nguyen', crew:'ironworks',sex:'F',age:'35+', rx:true, td:865, ws:71, coachOK:true},
+  {id:'m4',name:'Khoa Le',    crew:'ironworks',sex:'M',age:'open',rx:true, td:701, ws:88, coachOK:true},
+  {id:'m5',name:'Anh Vo',     crew:'rundown',  sex:'F',age:'open',rx:false,td:910, ws:66, coachOK:false},
+  {id:'m6',name:'Tuan Bui',   crew:'forge',    sex:'M',age:'45+', rx:true, td:828, ws:73, coachOK:true},
+  {id:'m7',name:'Hoa Dang',   crew:'ironworks',sex:'F',age:'open',rx:true, td:812, ws:75, coachOK:true},
+  {id:'m8',name:'Son Ha',     crew:'rundown',  sex:'M',age:'open',rx:true, td:769, ws:81, coachOK:true},
+  {id:'m9',name:'Trang Do',   crew:'forge',    sex:'F',age:'open',rx:false,td:946, ws:62, coachOK:false},
+  {id:'m10',name:'Bao Ly',    crew:'ironworks',sex:'M',age:'35+', rx:true, td:795, ws:78, coachOK:true},
+];
+function mockFeedSeed(){
+  const h=36e5, m=6e4;
+  return [
+    {id:'f1',who:'Khoa Le',crew:'ironworks',type:'td',text:'crushed <b>The Weapon Throwdown</b> in 11:41 (Rx)',ts:Date.now()-2*h,kudos:14,likedByMe:false,comments:[{by:'Duc Pham',text:'Engine!'}]},
+    {id:'f2',who:'Linh Tran',crew:'forge',type:'pr',text:'hit a PR — <b>Deadlift 140 kg</b>',ts:Date.now()-5*h,kudos:9,likedByMe:false,comments:[]},
+    {id:'f3',who:'Rundown Run Club',crew:'rundown',type:'ch',text:'started a challenge — <b>Most metres rowed this week</b>',ts:Date.now()-9*h,kudos:6,likedByMe:false,comments:[]},
+    {id:'f4',who:'Mai Nguyen',crew:'ironworks',type:'td',text:'logged a benchmark — <b>14:25</b> (Rx · 35+)',ts:Date.now()-26*h,kudos:11,likedByMe:false,comments:[{by:'Hoa Dang',text:'Big jump from last month 🔥'}]},
+  ];
+}
+/* ---- time-boxed challenges (mock leaderboards seeded) ---- */
+function mockChallenges(){
+  const wk=7*864e5, now=Date.now();
+  return [
+    {id:'ch_row',name:'Most metres rowed',unit:'m',ends:now+4*864e5,board:[['Khoa Le',12400],['Son Ha',11800],['Duc Pham',9600],['Mai Nguyen',8200]]},
+    {id:'ch_5k', name:'Fastest 5 km run',unit:'time',ends:now+2*864e5,board:[['Anh Vo',1212],['Linh Tran',1284],['Bao Ly',1320]]},
+  ];
+}
+
+/* ---- state + persistence ---- */
+function competeInit(){
+  db.compete=db.compete||{};
+  const c=db.compete;
+  c.me=c.me||{}; c.me.name=c.me.name||avName(); c.me.sex=c.me.sex||'M'; c.me.age=c.me.age||'open';
+  if(c.crewId===undefined) c.crewId=null;
+  c.entries=c.entries||[];
+  c.feed=c.feed||[];
+  c.kudosState=c.kudosState||{};
+  c.myComments=c.myComments||{};
+  if(!c.events){
+    c.events=[{id:'evt_sat',code:'WPN1',name:'Saturday Throwdown #1',host:'The Forge',date:cpNextSat(),wod:'weapon',joined:false}];
+  }
+  save();
+}
+function cpNextSat(){ const d=new Date(); d.setDate(d.getDate()+((6-d.getDay()+7)%7||7)); return d.toISOString().slice(0,10); }
+
+/* ---- small helpers ---- */
+function cpInitial(n){ return (n||'?').trim().charAt(0).toUpperCase(); }
+function cpFmtTime(s){ s=Math.round(s); const m=Math.floor(s/60); return m+':'+String(s%60).padStart(2,'0'); }
+function cpParseTime(str){ str=(str||'').trim(); if(!str) return null; if(str.indexOf(':')<0){ const n=parseFloat(str); return isNaN(n)?null:Math.round(n); } const p=str.split(':'); const m=parseInt(p[0],10)||0, s=parseInt(p[1],10)||0; return m*60+s; }
+function cpFmtPace(p){ const m=Math.floor(p); const s=Math.round((p-m)*60); return m+':'+String(s).padStart(2,'0'); }
+function cpAgo(ts){ const d=Date.now()-ts; const mn=Math.round(d/6e4); if(mn<1) return 'now'; if(mn<60) return mn+'m'; const h=Math.round(mn/60); if(h<24) return h+'h'; return Math.round(h/24)+'d'; }
+function crewName(id){ const c=MOCK_CREWS.find(x=>x.id===id); return c?c.name:(id||''); }
+function gymLogs(){ return (db.sports&&db.sports.gym&&db.sports.gym.logs)||[]; }
+function bestE1RMof(lift){ let b=0; gymLogs().forEach(l=>{ if(l.ex===lift){ const e=e1RM(l.kg,l.reps); if(e>b) b=e; } }); return b; }
+
+/* ================= Weapon Score ================= */
+const WS_STR={'Squat':2.0,'Bench Press':1.5,'Deadlift':2.5,'Overhead Press':1.0,'Barbell Row':1.4,'Leg Press':3.0};
+function wsStrengthParts(){
+  const bw=db.bw||75, parts=[];
+  for(const lift in WS_STR){ const best=bestE1RMof(lift); if(best>0){ const ratio=best/bw; const sc=Math.max(0,Math.min(100,Math.round(ratio/WS_STR[lift]*100))); parts.push({name:lift,score:sc,detail:Math.round(best)+' kg e1RM · '+ratio.toFixed(2)+'×BW'}); } }
+  return parts;
+}
+function wsEngineParts(){
+  const parts=[]; let bestPace=null;
+  ['run','trail'].forEach(id=>{ const b=db.sports&&db.sports[id]; if(!b) return; (b.logs||[]).forEach(l=>{ const km=l.v1||0,min=l.v2||0; if(km>=1&&min>0){ const p=min/km; if(bestPace==null||p<bestPace) bestPace=p; } }); });
+  if(bestPace!=null){ const sc=Math.max(0,Math.min(100,Math.round((7.5-bestPace)/(7.5-3.0)*100))); parts.push({name:'Best run pace',score:sc,detail:cpFmtPace(bestPace)+' /km'}); }
+  const since=Date.now()-28*864e5; let km=0;
+  [['run',1],['trail',1],['swimming',0.001],['hyrox',0.001]].forEach(([id,mult])=>{ const b=db.sports&&db.sports[id]; if(!b) return; (b.logs||[]).forEach(l=>{ const t=new Date(l.date).getTime(); if(t>=since) km+=(l.v1||0)*mult; }); });
+  if(km>0){ const sc=Math.max(0,Math.min(100,Math.round(km/40*100))); parts.push({name:'28-day engine volume',score:sc,detail:km.toFixed(1)+' km'}); }
+  return parts;
+}
+function weaponScore(){
+  const sp=wsStrengthParts(), ep=wsEngineParts();
+  const strength=sp.length?Math.round(sp.reduce((a,p)=>a+p.score,0)/sp.length):null;
+  const engine=ep.length?Math.round(ep.reduce((a,p)=>a+p.score,0)/ep.length):null;
+  let total,note='';
+  if(strength!=null&&engine!=null) total=Math.round((strength+engine)/2);
+  else if(strength!=null){ total=Math.round(strength*0.65); note='Add running (or Strava) to unlock the engine half.'; }
+  else if(engine!=null){ total=Math.round(engine*0.65); note='Log barbell lifts to unlock the strength half.'; }
+  else { total=0; note='Log a few lifts and runs to generate your score.'; }
+  return {total,strength,engine,parts:[...sp,...ep],note};
+}
+
+/* ================= open / close / render ================= */
+const CP_TABS=[['score','Score'],['throwdown','Throwdown'],['board','Board'],['challenges','Challenges'],['crews','Crews'],['feed','Feed']];
+let cpState={tab:'score',board:'evt_sat',div:'all',sex:'all',crew:'all'};
+function openCompete(tab){
+  competeInit();
+  if(tab) cpState.tab=tab;
+  const seg=document.getElementById('cpSeg');
+  seg.innerHTML=CP_TABS.map(t=>`<button class="${cpState.tab===t[0]?'on':''}" onclick="cpGo('${t[0]}')">${t[1]}</button>`).join('');
+  document.getElementById('competeScreen').classList.add('open');
+  document.body.style.overflow='hidden';
+  cpRender();
+}
+function closeCompete(){ document.getElementById('competeScreen').classList.remove('open'); document.body.style.overflow=''; renderActive(); }
+function cpGo(tab){ cpState.tab=tab; document.querySelectorAll('#cpSeg button').forEach((b,i)=>b.classList.toggle('on',CP_TABS[i][0]===tab)); document.getElementById('cpBody').scrollTop=0; cpRender(); }
+function cpRender(){
+  const t=cpState.tab;
+  document.getElementById('cpTitle').textContent={score:'Weapon Score',throwdown:'Throwdown',board:'Leaderboard',challenges:'Challenges',crews:'Crews',feed:'Feed'}[t]||'Compete';
+  const b=document.getElementById('cpBody');
+  if(t==='score') b.innerHTML=cpScoreHTML();
+  else if(t==='throwdown') b.innerHTML=cpThrowdownHTML();
+  else if(t==='board') b.innerHTML=cpBoardHTML();
+  else if(t==='challenges') b.innerHTML=cpChallengesHTML();
+  else if(t==='crews') b.innerHTML=cpCrewsHTML();
+  else if(t==='feed') b.innerHTML=cpFeedHTML();
+}
+/* ---- Challenges tab (time-boxed mini-competitions) ---- */
+function cpChallengesHTML(){
+  competeInit();
+  db.compete.joinedCh=db.compete.joinedCh||{};
+  const chs=mockChallenges();
+  let h='<div class="cp-card"><h3>Time-boxed challenges</h3><div class="cp-sub">Cheap, repeatable competition between throwdowns. Join one and climb its mini-board.</div></div>';
+  h+=chs.map(c=>{
+    const days=Math.max(0,Math.round((c.ends-Date.now())/864e5));
+    const joined=!!db.compete.joinedCh[c.id];
+    const board=c.board.slice();
+    if(joined&&db.compete.chScore&&db.compete.chScore[c.id]!=null){ board.push([db.compete.me.name||avName(),db.compete.chScore[c.id],true]); }
+    board.sort((a,b)=> c.unit==='time' ? a[1]-b[1] : b[1]-a[1]);
+    const fmt=v=>c.unit==='time'?cpFmtTime(v):(v.toLocaleString()+' '+c.unit);
+    let rows=board.slice(0,5).map((r,i)=>`<div class="lb-row${r[2]?' me':''}"><div class="lb-rank${i===0?' g1':''}">${i+1}</div><div class="lb-av">${esc(cpInitial(r[0]))}</div><div class="lb-main"><div class="lb-name">${esc(r[0])}${r[2]?' <span class="cp-badge rx">You</span>':''}</div></div><div class="lb-score">${fmt(r[1])}</div></div>`).join('');
+    return `<div class="cp-card"><h3>${esc(c.name)}</h3><div class="cp-sub">Ends in ${days} day${days===1?'':'s'} · ${board.length} in</div>${rows}<div style="height:10px"></div>${joined?`<button class="cp-btn ghost sm" onclick="cpLogCh('${c.id}','${c.unit}')">Update my result</button>`:`<button class="cp-btn sm" onclick="cpJoinCh('${c.id}','${c.unit}')">Join challenge</button>`}</div>`;
+  }).join('');
+  return h;
+}
+function cpJoinCh(id,unit){ db.compete.joinedCh=db.compete.joinedCh||{}; db.compete.joinedCh[id]=true; save(); cpLogCh(id,unit); }
+function cpLogCh(id,unit){ const lbl=unit==='time'?'your time (mm:ss)':'your total ('+unit+')'; const raw=(prompt('Enter '+lbl)||'').trim(); if(!raw) { cpRender(); return; } const val=unit==='time'?cpParseTime(raw):parseFloat(raw.replace(/[^0-9.]/g,'')); if(val==null||isNaN(val)){ toast('Enter a valid value'); return; } db.compete.chScore=db.compete.chScore||{}; db.compete.chScore[id]=val; save(); toast('Result updated'); cpRender(); }
+
+/* ---- Score tab ---- */
+function cpScoreHTML(){
+  const w=weaponScore(); const R=72, C=2*Math.PI*R; const off=C*(1-w.total/100);
+  let h='<div class="ws-hero"><div class="ws-ring"><svg width="168" height="168" viewBox="0 0 168 168">'+
+    `<circle cx="84" cy="84" r="${R}" fill="none" stroke="var(--track)" stroke-width="12"/>`+
+    `<circle cx="84" cy="84" r="${R}" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/>`+
+    '</svg><div class="ws-val"><div class="ws-num">'+w.total+'</div><div class="ws-cap">Weapon Score</div></div></div>'+
+    '<div class="ws-split"><div><b>'+(w.strength!=null?w.strength:'—')+'</b><span>Strength</span></div><div><b>'+(w.engine!=null?w.engine:'—')+'</b><span>Engine</span></div></div>'+
+    '</div>';
+  h+='<div class="cp-card"><h3>How it’s built</h3><div class="cp-sub">Transparent v1 — each effort scored 0–100 vs a reference standard, then averaged per modality.</div>';
+  if(w.parts.length) h+=w.parts.map(p=>`<div class="ws-part"><div class="wp-name">${esc(p.name)}<div class="lb-meta">${esc(p.detail)}</div></div><div class="wp-bar"><i style="width:${p.score}%"></i></div><div class="wp-sc">${p.score}</div></div>`).join('');
+  else h+='<div class="cp-empty">No qualifying efforts yet.</div>';
+  if(w.note) h+='<div class="cp-note">'+esc(w.note)+'</div>';
+  h+='</div>';
+  h+='<button class="cp-btn ghost" onclick="shareWeaponScore()">Share my score card</button>';
+  return h;
+}
+
+/* ---- Throwdown tab ---- */
+function cpThrowdownHTML(){
+  const T=WEAPON_THROWDOWN;
+  const mine=(db.compete.entries||[]).slice().sort((a,b)=>a.score-b.score);
+  let h='<div class="cp-card"><h3>'+esc(T.name)+'</h3><div class="cp-sub">'+esc(T.blurb)+'</div>'+
+    '<ul class="td-stations">'+T.stations.map((s,i)=>`<li><span class="td-n">${i+1}</span>${esc(s)}</li>`).join('')+'</ul>'+
+    '<div style="height:12px"></div><button class="cp-btn" onclick="openTd(null)">Log an attempt</button></div>';
+  h+='<div class="cp-card"><h3>Your benchmark board</h3><div class="cp-sub">Your attempts over time — comparable because the workout never changes.</div>';
+  if(mine.length){
+    h+=mine.map((e,i)=>{ const best=i===0; return `<div class="lb-row${best?' me':''}"><div class="lb-rank${best?' g1':''}">${best?'PB':i+1}</div><div class="lb-main"><div class="lb-name">${cpFmtTime(e.score)} <span class="cp-badge ${e.rx?'rx':'sc'}">${e.rx?'Rx':'Scaled'}</span>${e.coachOK?'<span class="cp-badge ok">Coach ✓</span>':''}</div><div class="lb-meta">${cpDateShort(e.ts)} · ${e.sex} · ${e.age}</div></div><button class="cp-btn ghost sm" onclick="shareThrowdown('${e.id}')">Card</button></div>`; }).join('');
+  } else h+='<div class="cp-empty">No attempts logged yet. Hit “Log an attempt”.</div>';
+  h+='</div>';
+  return h;
+}
+function cpDateShort(ts){ return new Date(ts).toLocaleDateString(undefined,{day:'numeric',month:'short'}); }
+function openTd(eventId){
+  competeInit();
+  const me=db.compete.me;
+  const body=document.getElementById('tdModalBody');
+  const evtName=eventId?(db.compete.events.find(e=>e.id===eventId)||{}).name:null;
+  document.getElementById('tdModalTitle').textContent=evtName?('Submit · '+evtName):'Log Throwdown';
+  body.innerHTML=
+    '<input type="hidden" id="tdEvent" value="'+(eventId||'')+'">'+
+    '<div class="cp-field"><label>Your time (mm:ss) — or reps if capped</label><input id="tdScore" inputmode="numeric" placeholder="14:25"></div>'+
+    '<div class="cp-divrow">'+
+      '<div class="cp-field"><label>Division</label><select id="tdRx"><option value="rx">Rx</option><option value="sc">Scaled</option></select></div>'+
+      '<div class="cp-field"><label>Category</label><select id="tdSex"><option value="M"'+(me.sex==='M'?' selected':'')+'>M</option><option value="F"'+(me.sex==='F'?' selected':'')+'>F</option></select></div>'+
+    '</div>'+
+    '<div class="cp-field"><label>Age band</label><select id="tdAge">'+AGE_BANDS.map(a=>`<option value="${a[0]}"${me.age===a[0]?' selected':''}>${a[1]}</option>`).join('')+'</select></div>'+
+    '<label style="display:flex;align-items:center;gap:9px;font-size:.82rem;color:var(--ink);margin:4px 0 14px"><input type="checkbox" id="tdCoach" style="width:18px;height:18px"> Coach-verified on the day</label>'+
+    '<div class="mrow"><button class="m-cancel" onclick="closeTd()">Cancel</button><button class="m-save" onclick="saveTd()">Save result</button></div>';
+  document.getElementById('tdModal').classList.add('open');
+}
+function closeTd(){ document.getElementById('tdModal').classList.remove('open'); }
+function saveTd(){
+  const score=cpParseTime(document.getElementById('tdScore').value);
+  if(score==null||score<=0){ toast('Enter a time like 14:25'); return; }
+  const rx=document.getElementById('tdRx').value==='rx';
+  const sex=document.getElementById('tdSex').value, age=document.getElementById('tdAge').value;
+  const coachOK=document.getElementById('tdCoach').checked;
+  const eventId=document.getElementById('tdEvent').value||null;
+  db.compete.me.sex=sex; db.compete.me.age=age;
+  const entry={id:uid(),eventId:eventId,score:score,rx:rx,sex:sex,age:age,coachOK:coachOK,ts:Date.now()};
+  db.compete.entries.push(entry);
+  if(eventId){ const ev=db.compete.events.find(e=>e.id===eventId); if(ev) ev.joined=true; }
+  db.compete.feed.unshift({id:uid(),who:'me',type:'td',text:`logged <b>The Weapon Throwdown</b> — ${cpFmtTime(score)} (${rx?'Rx':'Scaled'})`,ts:Date.now(),kudos:0,likedByMe:false,comments:[]});
+  save();
+  closeTd();
+  if(navigator.vibrate) navigator.vibrate([14,30,14]);
+  toast('Result saved — '+cpFmtTime(score));
+  cpState.tab='board'; cpState.board=eventId||'evt_sat';
+  cpGo('board');
+  setTimeout(()=>shareThrowdown(entry.id),350);
+}
+
+/* ---- Board tab (events + leaderboard) ---- */
+function cpBoardHTML(){
+  const events=db.compete.events||[];
+  const boards=[...events.map(e=>[e.id,e.name]),['alltime','All-time benchmark']];
+  if(!boards.find(b=>b[0]===cpState.board)) cpState.board=boards[0][0];
+  const crewOpts=[['all','All crews'],...(db.compete.crewId?[['mine','My crew']]:[]),...MOCK_CREWS.map(c=>[c.id,c.name])];
+  let h='<div class="cp-btnrow" style="margin-bottom:12px"><button class="cp-btn sm" style="flex:1" onclick="cpJoinByCode()">Join by code</button><button class="cp-btn ghost sm" style="flex:1" onclick="cpCreateEvent()">+ Create event</button></div>';
+  // event card for selected
+  const ev=events.find(e=>e.id===cpState.board);
+  if(ev){ h+=`<div class="cp-card"><h3>${esc(ev.name)}</h3><div class="cp-sub">${esc(ev.host)} · ${esc(ev.date)} · code <b style="color:var(--accent)">${esc(ev.code)}</b></div><button class="cp-btn" onclick="openTd('${ev.id}')">Submit my score</button></div>`; }
+  h+='<div class="lb-filters">'+
+    '<select onchange="cpFilter(\'board\',this.value)">'+boards.map(b=>`<option value="${b[0]}"${cpState.board===b[0]?' selected':''}>${esc(b[1])}</option>`).join('')+'</select>'+
+    '<select onchange="cpFilter(\'div\',this.value)"><option value="all">All div</option><option value="rx"'+(cpState.div==='rx'?' selected':'')+'>Rx</option><option value="sc"'+(cpState.div==='sc'?' selected':'')+'>Scaled</option></select>'+
+    '<select onchange="cpFilter(\'sex\',this.value)"><option value="all">M/F</option><option value="M"'+(cpState.sex==='M'?' selected':'')+'>M</option><option value="F"'+(cpState.sex==='F'?' selected':'')+'>F</option></select>'+
+    '<select onchange="cpFilter(\'crew\',this.value)">'+crewOpts.map(c=>`<option value="${c[0]}"${cpState.crew===c[0]?' selected':''}>${esc(c[1])}</option>`).join('')+'</select>'+
+    '</div>';
+  let rows=cpEntries(cpState.board);
+  if(cpState.div!=='all') rows=rows.filter(r=>cpState.div==='rx'?r.rx:!r.rx);
+  if(cpState.sex!=='all') rows=rows.filter(r=>r.sex===cpState.sex);
+  if(cpState.crew!=='all'){ const want=cpState.crew==='mine'?db.compete.crewId:cpState.crew; rows=rows.filter(r=>r.crew===want); }
+  rows.sort((a,b)=>a.score-b.score);
+  if(!rows.length){ h+='<div class="cp-empty">No results in this division yet.</div>'; return h; }
+  h+=rows.map((r,i)=>{ const rank=i+1; return `<div class="lb-row${r.me?' me':''}"><div class="lb-rank${rank===1?' g1':''}">${rank}</div><div class="lb-av">${r.photo?`<img src="${r.photo}">`:esc(cpInitial(r.name))}</div><div class="lb-main"><div class="lb-name">${esc(r.name)}${r.me?' <span class="cp-badge rx">You</span>':''}</div><div class="lb-meta">${r.crew?esc(crewName(r.crew))+' · ':''}${r.sex} · ${r.age} ${r.coachOK?'· ✓':''}</div></div><div class="lb-score">${cpFmtTime(r.score)} <span class="cp-badge ${r.rx?'rx':'sc'}">${r.rx?'Rx':'Sc'}</span></div></div>`; }).join('');
+  return h;
+}
+function cpEntries(boardId){
+  let rows=MOCK_ATH.map(a=>({name:a.name,crew:a.crew,sex:a.sex,age:a.age,rx:a.rx,score:a.td,coachOK:a.coachOK,me:false}));
+  const ue=db.compete.entries||[];
+  const mine=boardId==='alltime'?ue.slice():ue.filter(e=>e.eventId===(boardId==='evt_sat'?e.eventId:boardId)||(boardId!=='alltime'&&e.eventId===boardId));
+  const meName=db.compete.me.name||avName(), photo=db.profile&&db.profile.photo;
+  let added=(boardId==='alltime'?ue:ue.filter(e=>e.eventId===boardId)).map(e=>({name:meName,crew:db.compete.crewId,sex:e.sex,age:e.age,rx:e.rx,score:e.score,coachOK:e.coachOK,me:true,photo:photo}));
+  if(boardId==='alltime'&&added.length>1){ const best=added.reduce((a,b)=>b.score<a.score?b:a); added=[best]; }
+  return rows.concat(added);
+}
+function cpFilter(k,v){ cpState[k]=v; cpRender(); }
+function cpJoinByCode(){
+  const code=(prompt('Enter event code (try WPN1)')||'').trim().toUpperCase();
+  if(!code) return;
+  const ev=db.compete.events.find(e=>e.code===code);
+  if(ev){ ev.joined=true; save(); cpState.board=ev.id; toast('Joined '+ev.name); cpRender(); }
+  else { const e={id:uid(),code:code,name:'Event '+code,host:'Guest',date:cpNextSat(),wod:'weapon',joined:true}; db.compete.events.push(e); save(); cpState.board=e.id; toast('Joined event '+code); cpRender(); }
+}
+function cpCreateEvent(){
+  const name=(prompt('Event name','Friday Throwdown')||'').trim(); if(!name) return;
+  const code='WPN'+Math.floor(100+Math.random()*900);
+  const e={id:uid(),code:code,name:name,host:db.compete.me.name||avName(),date:cpNextSat(),wod:'weapon',joined:true};
+  db.compete.events.push(e); save(); cpState.board=e.id; toast('Event created · code '+code); cpRender();
+}
+
+/* ---- Crews tab ---- */
+function cpCrewsHTML(){
+  let h='';
+  if(db.compete.crewId){ const c=MOCK_CREWS.find(x=>x.id===db.compete.crewId)||{name:db.compete.crewId,tag:'•',members:1,city:''};
+    h+=`<div class="cp-card"><div class="cp-sub">Your crew</div><div class="crew-card" style="margin-bottom:0;border:none;padding:0"><div class="crew-logo">${esc(c.tag||cpInitial(c.name))}</div><div class="crew-main"><div class="crew-name">${esc(c.name)}</div><div class="crew-meta">${c.members} members${c.city?' · '+esc(c.city):''}</div></div></div><div style="height:12px"></div><div class="cp-btnrow"><button class="cp-btn ghost sm" style="flex:1" onclick="cpViewCrewBoard()">Crew board</button><button class="cp-btn ghost sm" style="flex:1" onclick="cpLeaveCrew()">Leave</button></div></div>`;
+  } else {
+    h+='<div class="cp-card"><h3>Join a crew</h3><div class="cp-sub">Crews are the unit your scene grows around — crew-filtered boards and inter-crew challenges.</div><button class="cp-btn" onclick="cpCreateCrew()">+ Start a crew</button></div>';
+  }
+  h+='<div class="cp-sub" style="margin:4px 2px 8px;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase">Crews near you</div>';
+  h+=MOCK_CREWS.map(c=>`<div class="crew-card"><div class="crew-logo">${esc(c.tag)}</div><div class="crew-main"><div class="crew-name">${esc(c.name)}</div><div class="crew-meta">${c.members} members · ${esc(c.city)}</div></div>${db.compete.crewId===c.id?'<span class="cp-badge ok">Joined</span>':`<button class="cp-btn sm" onclick="cpJoinCrew('${c.id}')">Join</button>`}</div>`).join('');
+  return h;
+}
+function cpJoinCrew(id){ db.compete.crewId=id; save(); toast('Joined '+crewName(id)); cpRender(); }
+function cpLeaveCrew(){ db.compete.crewId=null; save(); toast('Left crew'); cpRender(); }
+function cpCreateCrew(){ const n=(prompt('Crew name')||'').trim(); if(!n) return; const id='my_'+slug(n).toLowerCase(); MOCK_CREWS.unshift({id:id,name:n,tag:cpInitial(n),city:'Your crew',members:1}); db.compete.crewId=id; save(); toast('Crew created'); cpRender(); }
+function cpViewCrewBoard(){ cpState.tab='board'; cpState.crew='mine'; document.querySelectorAll('#cpSeg button').forEach((b,i)=>b.classList.toggle('on',CP_TABS[i][0]==='board')); cpRender(); }
+
+/* ---- Feed tab ---- */
+function cpFeedItems(){
+  const seed=mockFeedSeed();
+  const mine=(db.compete.feed||[]).map(f=>Object.assign({},f,{who:f.who==='me'?(db.compete.me.name||avName()):f.who,mine:f.who==='me'}));
+  return mine.concat(seed).sort((a,b)=>b.ts-a.ts);
+}
+function cpFeedHTML(){
+  let h='<div class="cp-card" style="display:flex;gap:10px;align-items:center"><div class="lb-av" style="flex:0 0 38px;width:38px;height:38px">'+(db.profile&&db.profile.photo?`<img src="${db.profile.photo}">`:esc(cpInitial(db.compete.me.name||avName())))+'</div><button class="cp-btn ghost sm" style="flex:1" onclick="openTd(null)">Post a Throwdown result</button></div>';
+  const items=cpFeedItems();
+  if(!items.length){ return h+'<div class="cp-empty">No activity yet.</div>'; }
+  h+=items.map(f=>{
+    const liked=db.compete.kudosState[f.id]||f.likedByMe;
+    const k=(f.kudos||0)+(db.compete.kudosState[f.id]?1:0);
+    const extra=(db.compete.myComments[f.id]||[]).map(t=>({by:db.compete.me.name||avName(),text:t}));
+    const cms=(f.comments||[]).concat(extra);
+    return `<div class="fd-item"><div class="fd-top"><div class="lb-av" style="flex:0 0 36px;width:36px;height:36px">${f.mine&&db.profile&&db.profile.photo?`<img src="${db.profile.photo}">`:esc(cpInitial(f.who))}</div><div><div class="lb-name">${esc(f.who)}</div><div class="lb-meta">${f.crew?esc(crewName(f.crew)):'You'}</div></div><span class="fd-when">${cpAgo(f.ts)}</span></div>`+
+      `<div class="fd-body">${f.text}</div>`+
+      (cms.length?`<div class="fd-comments">${cms.map(c=>`<div class="fd-cm"><b>${esc(c.by)}</b> ${esc(c.text)}</div>`).join('')}</div>`:'')+
+      `<div class="fd-acts"><button class="${liked?'liked':''}" onclick="cpKudos('${f.id}')"><svg viewBox="0 0 24 24" fill="${liked?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8"><path d="M20.8 8.6a5 5 0 0 0-8.8-2.3A5 5 0 0 0 3.2 8.6c0 4 5 8 8.8 11 3.8-3 8.8-7 8.8-11Z"/></svg>${k} kudos</button>`+
+      `<button onclick="cpComment('${f.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a8 8 0 0 1-11.3 7.3L3 21l1.7-6.7A8 8 0 1 1 21 12Z"/></svg>Comment</button></div></div>`;
+  }).join('');
+  return h;
+}
+function cpKudos(id){ const s=db.compete.kudosState; s[id]=!s[id]; save(); if(navigator.vibrate)navigator.vibrate(8); cpRender(); }
+function cpComment(id){ const t=(prompt('Add a comment')||'').trim(); if(!t) return; db.compete.myComments[id]=db.compete.myComments[id]||[]; db.compete.myComments[id].push(t); save(); cpRender(); }
+function competePostPR(name,wlabel){ try{ competeInit(); db.compete.feed.unshift({id:uid(),who:'me',type:'pr',text:`hit a PR — <b>${esc(name)} ${esc(wlabel)}</b>`,ts:Date.now(),kudos:0,likedByMe:false,comments:[]}); save(); }catch(e){} }
+
+/* ================= shareable result card (canvas) ================= */
+let shareCardLast=null;
+function drawShareCard(o){
+  const cv=document.getElementById('shareCardCanvas'); const x=cv.getContext('2d');
+  const W=cv.width, H=cv.height; const acc=accent();
+  const grd=x.createLinearGradient(0,0,0,H); grd.addColorStop(0,'#141517'); grd.addColorStop(1,'#0a0a0b');
+  x.fillStyle=grd; x.fillRect(0,0,W,H);
+  x.fillStyle='rgba('+accentRGB()+',0.14)'; x.beginPath(); x.arc(W/2,150,260,0,7); x.fill();
+  x.fillStyle=acc; x.font='800 30px Archivo, Inter, sans-serif'; x.textAlign='left'; x.fillText('WEAPON', 44, 78);
+  x.fillStyle='rgba(255,255,255,.5)'; x.font='600 17px Inter, sans-serif'; x.textAlign='right'; x.fillText(o.tag||'', W-44, 76);
+  x.textAlign='center';
+  x.fillStyle='rgba(255,255,255,.66)'; x.font='600 22px Inter, sans-serif'; x.fillText(o.label||'', W/2, 210);
+  x.fillStyle='#f3f1ec'; x.font='800 120px Archivo, Inter, sans-serif'; x.fillText(o.big||'', W/2, 340);
+  if(o.sub){ x.fillStyle=acc; x.font='700 26px Inter, sans-serif'; x.fillText(o.sub, W/2, 392); }
+  // divider
+  x.strokeStyle='rgba(255,255,255,.12)'; x.lineWidth=1; x.beginPath(); x.moveTo(44,460); x.lineTo(W-44,460); x.stroke();
+  const meta=o.meta||[]; const colW=(W-88)/Math.max(1,meta.length);
+  meta.forEach((m,i)=>{ const cx=44+colW*i+colW/2; x.fillStyle='#f3f1ec'; x.font='800 32px Archivo, Inter, sans-serif'; x.fillText(m[1], cx, 520); x.fillStyle='rgba(255,255,255,.45)'; x.font='600 14px Inter, sans-serif'; x.fillText(m[0].toUpperCase(), cx, 548); });
+  x.fillStyle='rgba(255,255,255,.4)'; x.font='600 15px Inter, sans-serif'; x.fillText((o.who||avName())+'  ·  '+new Date().toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}), W/2, H-44);
+  shareCardLast=o.file||'weapon-card';
+}
+function openShareCard(o){ competeInit(); drawShareCard(o); document.getElementById('shareCardModal').classList.add('open'); }
+function closeShareCard(){ document.getElementById('shareCardModal').classList.remove('open'); }
+function shareThrowdown(id){ const e=(db.compete.entries||[]).find(x=>x.id===id); if(!e) return; const all=cpEntries('alltime').sort((a,b)=>a.score-b.score); const rank=all.findIndex(r=>r.me&&r.score===e.score)+1;
+  openShareCard({tag:'THROWDOWN',label:'The Weapon Throwdown',big:cpFmtTime(e.score),sub:e.rx?'Rx':'Scaled',meta:[['Rank',rank>0?'#'+rank:'—'],['Division',e.sex+' '+e.age],['Verified',e.coachOK?'Yes':'—']],file:'weapon-throwdown'}); }
+function shareWeaponScore(){ const w=weaponScore(); openShareCard({tag:'WEAPON SCORE',label:'My cross-modal score',big:String(w.total),meta:[['Strength',w.strength!=null?w.strength:'—'],['Engine',w.engine!=null?w.engine:'—'],['Streak',(avStats().streak)+'d']],file:'weapon-score'}); }
+function downloadShareCard(){ const cv=document.getElementById('shareCardCanvas');
+  cv.toBlob(function(blob){ if(!blob){ toast('Could not render'); return; } const file=new File([blob],(shareCardLast||'weapon')+'.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],title:'WEAPON'}).catch(()=>{}); }
+    else { const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=file.name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1500); toast('Card saved'); }
+  },'image/png'); }
+
+/* ---- home dashboard compete card ---- */
+function homeCompeteCardHTML(){
+  const w=weaponScore();
+  const sub=w.strength!=null&&w.engine!=null?('STR '+w.strength+' · ENG '+w.engine):(w.note||'');
+  return '<div class="home-compete" onclick="openCompete(\'score\')"><div class="hc-score">'+w.total+'</div><div class="hc-mid"><div class="hc-lab">Weapon Score</div><div class="hc-name">Compete &amp; Throwdown</div><div class="hc-sub">'+esc(sub)+'</div></div><div class="hc-go"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div></div>';
+}
+
 /* ================= init ================= */
 save();
 applyTheme();
@@ -2512,6 +2987,7 @@ applyLayout();
 applyColors();
 renderBrand();
 applyMode();
+competeInit();
 initPullRefresh();
 applyFabPos();
 initFabDrag();
