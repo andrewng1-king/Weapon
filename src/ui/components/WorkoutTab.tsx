@@ -10,6 +10,30 @@ import { createLogEntry, isLoggedToday } from '@/application/workoutUsecases';
 const nf = (n: number) => Math.round(n).toLocaleString('en-US');
 const RING_CIRC = 125.66; // 2π × 20
 
+const BARBELL_NAMES = new Set([
+  'Bench Press','Incline Press','Decline Press','Barbell Row','Pendlay Row',
+  'Overhead Press','Squat','Front Squat','Deadlift','Romanian Deadlift',
+  'T-Bar Row','Skull Crusher','Close-grip Bench Press','Upright Row','Barbell Curl','Shrug',
+]);
+function barWeight(name: string): number {
+  return BARBELL_NAMES.has(name) ? 20 : 0;
+}
+function fmtN(n: number): string {
+  return Number.isInteger(n) ? String(n) : n.toFixed(1);
+}
+function fmtPlate(name: string, kg: number, reps: number): string {
+  const bar = barWeight(name);
+  if (kg === 0) return `Bodyweight · ${reps} reps`;
+  if (bar > 0) {
+    const perSide = Math.max(0, (kg - bar) / 2);
+    return `${fmtN(kg)} kg · ${bar} bar + ${fmtN(perSide)}/side · ${reps} reps`;
+  }
+  return `${fmtN(kg)} kg · ${reps} reps`;
+}
+function fmtLast(kg: number, reps: number): string {
+  return `${kg === 0 ? 'BW' : fmtN(kg)} × ${reps}`;
+}
+
 function prefersReduced() {
   return typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 }
@@ -246,21 +270,16 @@ export function WorkoutTab() {
                       className={`ex-compact${isAnimating ? ' logged-anim-compact' : ''}`}
                       onClick={() => setExpandedId(ex.n)}
                     >
-                      <MTile color={GROUP_COLORS[ex.group ?? group]} sm />
+                      <div className="ex-icon-dim">
+                        <BarbellIcon />
+                      </div>
                       <div className="ex-txt">
                         <div className="ex-name">
                           {ex.n}
                           {searchQuery && ex.group && <span className="search-grouptag">{ex.group}</span>}
                         </div>
-                        {lastLog && <div className="ex-target">last · {lastLog.kg} kg × {lastLog.reps}</div>}
+                        {lastLog && <div className="ex-target">last · {fmtLast(lastLog.kg, lastLog.reps)}</div>}
                       </div>
-                      <button
-                        className="logbtn-sm"
-                        onClick={(e) => { e.stopPropagation(); handleLog(ex); }}
-                        aria-label={`Log ${ex.n}`}
-                      >
-                        Log
-                      </button>
                     </div>
                   );
                 }
@@ -273,7 +292,7 @@ export function WorkoutTab() {
                   ? `▲ +${deltaKg} kg vs last`
                   : deltaKg < 0
                     ? `▼ ${Math.abs(deltaKg)} kg vs last`
-                    : '→ same as last';
+                    : '→ matches last';
 
                 return (
                   <div
@@ -285,7 +304,9 @@ export function WorkoutTab() {
                     <span className="ex-stamp" aria-hidden="true">Logged</span>
 
                     <div className="ex-head" onClick={() => setOpenDetail(isDetailOpen ? null : ex.n)}>
-                      <MTile color={GROUP_COLORS[ex.group ?? group]} />
+                      <div className="ex-icon-volt">
+                        <BarbellIcon />
+                      </div>
                       <div className="ex-txt">
                         <div className="ex-name">
                           {ex.n}
@@ -293,7 +314,6 @@ export function WorkoutTab() {
                         </div>
                         <div className="ex-target">{ex.t}</div>
                       </div>
-                      <span className="chev">›</span>
                     </div>
 
                     {hasDelta && (
@@ -303,18 +323,10 @@ export function WorkoutTab() {
                     <div className="controls">
                       <div className="stepper">
                         <button onClick={() => setVal(ex.n, Math.max(0, v.kg - 2.5), v.reps)}>−</button>
-                        <div className="val">
-                          <input type="number" value={v.kg} onChange={(e) => setVal(ex.n, +e.target.value, v.reps)} />
-                          <span className="unit">kg</span>
-                        </div>
                         <button onClick={() => setVal(ex.n, v.kg + 2.5, v.reps)}>+</button>
                       </div>
                       <div className="stepper">
                         <button onClick={() => setVal(ex.n, v.kg, Math.max(1, v.reps - 1))}>−</button>
-                        <div className="val">
-                          <input type="number" value={v.reps} onChange={(e) => setVal(ex.n, v.kg, +e.target.value)} />
-                          <span className="unit">reps</span>
-                        </div>
                         <button onClick={() => setVal(ex.n, v.kg, v.reps + 1)}>+</button>
                       </div>
                       <button
@@ -326,6 +338,13 @@ export function WorkoutTab() {
                         <span className="lb-ic lb-log">Log</span>
                         <span className="lb-ic lb-chk" aria-hidden="true"><CheckGlyph /></span>
                       </button>
+                    </div>
+
+                    <div className="ex-plate-row">
+                      <span className="ex-plate-chip">{fmtPlate(ex.n, v.kg, v.reps)}</span>
+                      {lastLog && (
+                        <span className="ex-plate-last">last · {fmtLast(lastLog.kg, lastLog.reps)}</span>
+                      )}
                     </div>
 
                     {isDetailOpen && (
