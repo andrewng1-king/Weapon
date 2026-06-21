@@ -1,4 +1,5 @@
 export * from './types';
+import type { Group, PresetExercise, Bucket, CustomExercise } from './types';
 export * from './sports';
 export * from './accents';
 export * from './ranks';

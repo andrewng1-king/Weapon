@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'EDGR — Strength Tracker',
+  title: 'ATHLETE — Strength Tracker',
   manifest: '/manifest.json',
-  appleWebApp: { capable: true, title: 'EDGR', statusBarStyle: 'black-translucent' },
+  appleWebApp: { capable: true, title: 'ATHLETE', statusBarStyle: 'black-translucent' },
 };
 
 export const viewport: Viewport = {
@@ -12,7 +12,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: '#0a0a0a',
+  themeColor: '#0a0a0b',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

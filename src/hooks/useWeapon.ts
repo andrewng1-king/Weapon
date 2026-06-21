@@ -113,8 +113,8 @@ export function useWeapon() {
     setAccent: (idx: number) => updateState((s) => profileUC.setAccent(s, idx)),
     saveProfile: (profile: Partial<WeaponState['profile']>) =>
       updateState((s) => ({ ...s, profile: { ...s.profile, ...profile } })),
-    setSportGoal: (sport: SportId, target: number) =>
-      updateState((s) => profileUC.setSportGoal(s, sport, target)),
+    setCalTarget: (target: number) =>
+      updateState((s) => profileUC.setCalTarget(s, target)),
     setFab: (fab: WeaponState['fab']) => updateState((s) => profileUC.setFab(s, fab)),
     markSeenLevel: (lvl: number) => updateState((s) => profileUC.markSeenLevel(s, lvl)),
     setBw: (bw: number) => updateState((s) => ({ ...s, bw })),

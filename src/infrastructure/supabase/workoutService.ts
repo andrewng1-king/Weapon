@@ -76,9 +76,12 @@ function migrateSettings(settings: Record<string, unknown>): Partial<WeaponState
   }
   out.sports = sports;
 
-  if (settings.goals && typeof settings.goals === 'object' && 'calTarget' in (settings.goals as object)) {
-    const g = settings.goals as { calTarget?: number };
-    out.goals = { gym: { target: g.calTarget ?? 3000 } };
+  if (settings.goals && typeof settings.goals === 'object') {
+    // Accept legacy calories-only ({calTarget}) and the interim per-sport
+    // ({gym:{target}}) shapes; normalise to calories-only.
+    const g = settings.goals as { calTarget?: number; gym?: { target?: number } };
+    const calTarget = g.calTarget ?? g.gym?.target;
+    out.goals = calTarget != null ? { calTarget } : {};
   }
 
   return out;

@@ -51,10 +51,10 @@ export function setAccent(state: WeaponState, colorIndex: number): WeaponState {
   return { ...state, dev: { ...state.dev, color: colorIndex } };
 }
 
-export function setSportGoal(state: WeaponState, sport: SportId, target: number): WeaponState {
+export function setCalTarget(state: WeaponState, target: number): WeaponState {
   return {
     ...state,
-    goals: { ...state.goals, [sport]: { target } },
+    goals: { ...state.goals, calTarget: target },
   };
 }
 

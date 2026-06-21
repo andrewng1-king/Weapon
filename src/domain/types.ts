@@ -73,10 +73,6 @@ export interface Profile {
   coverPos?: string;
 }
 
-export interface SportGoal {
-  target: number;
-}
-
 export interface DevSettings {
   on: boolean;
   lvl: number;
@@ -96,7 +92,8 @@ export interface WeaponState {
   sports: Record<SportId, Bucket>;
   bw: number;
   profile: Profile;
-  goals: Partial<Record<SportId, SportGoal>>;
+  /** Legacy calories-only weekly goal. */
+  goals: { calTarget?: number };
   theme: 'light' | 'dark';
   logo: 'weapon' | 'athlete';
   dev: DevSettings;

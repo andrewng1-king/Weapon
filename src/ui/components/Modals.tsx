@@ -59,14 +59,14 @@ function RecExerciseModal() {
               <div className="rex-name">{ex.n}{todayN ? <span className="rex-done"> ✓</span> : ''}</div>
               <div className="rex-ctl">
                 <div className="stepper">
-                  <button type="button" onClick={() => setVal(ex.n, { kg: Math.max(0, kg - 2.5), reps })}>−</button>
-                  <div className="val"><input type="number" value={kg} onChange={(e) => setVal(ex.n, { kg: +e.target.value, reps })} /><span className="unit">kg</span></div>
-                  <button type="button" onClick={() => setVal(ex.n, { kg: kg + 2.5, reps })}>+</button>
+                  <button type="button" onClick={() => setVal(ex.n, Math.max(0, kg - 2.5), reps)}>−</button>
+                  <div className="val"><input type="number" value={kg} onChange={(e) => setVal(ex.n, +e.target.value, reps)} /><span className="unit">kg</span></div>
+                  <button type="button" onClick={() => setVal(ex.n, kg + 2.5, reps)}>+</button>
                 </div>
                 <div className="stepper">
-                  <button type="button" onClick={() => setVal(ex.n, { kg, reps: Math.max(1, reps - 1) })}>−</button>
-                  <div className="val"><input type="number" value={reps} onChange={(e) => setVal(ex.n, { kg, reps: +e.target.value })} /><span className="unit">reps</span></div>
-                  <button type="button" onClick={() => setVal(ex.n, { kg, reps: reps + 1 })}>+</button>
+                  <button type="button" onClick={() => setVal(ex.n, kg, Math.max(1, reps - 1))}>−</button>
+                  <div className="val"><input type="number" value={reps} onChange={(e) => setVal(ex.n, kg, +e.target.value)} /><span className="unit">reps</span></div>
+                  <button type="button" onClick={() => setVal(ex.n, kg, reps + 1)}>+</button>
                 </div>
                 <button className="rex-log" onClick={() => recLog(ex)}>Log</button>
               </div>

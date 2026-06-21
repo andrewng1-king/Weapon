@@ -69,7 +69,7 @@ interface UIState {
 }
 
 export const useUIStore = create<UIState>((set) => ({
-  tab: 'home',
+  tab: 'workout',
   prevTab: null,
   tabAnimKey: 0,
   category: 'Chest',

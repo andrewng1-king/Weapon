@@ -1,31 +1,31 @@
 ﻿/* =====================================================================
-   EDGR — Blackout palette + Volt accent (restyle of WEAPON)
+   WEAPON — Premium blackout (Direction A: refined, game layer kept)
    One type system: Inter (UI) + Archivo (numbers). Sentence case.
-   Flat near-black panels. One restrained volt accent. No ambient motion.
+   Flat near-black panels. One restrained bronze accent. No ambient motion.
    ===================================================================== */
 :root{
   --app:480px;
-  --page:#0a0a0a;            /* void */
-  --panel:#161616;           /* carbon */
-  --panel-2:#1f1f1f;         /* raised carbon */
-  --ink:#f5f5f3;             /* ghost */
-  --muted:#8a8a86;
-  --faint:#5d5d5a;
-  --accent:#e8ff00;          /* volt — used sparingly */
-  --accent-dim:#9aa600;
-  --accent-rgb:232,255,0;
-  --accent-ink:#0a0a0a;
-  --good:#3ddc97;            /* climbed — positive delta */
-  --warn:#e0603a;            /* slipping — regression */
-  --gold:#e8ff00;
-  --line:rgba(255,255,255,.08);
+  --page:#0a0a0b;
+  --panel:#0e0f11;
+  --panel-2:#141517;
+  --ink:#e9e7e3;
+  --muted:#9b9a96;
+  --faint:#6a6a67;
+  --accent:#c2a878;          /* warm bronze — used sparingly */
+  --accent-dim:#7d6c47;
+  --accent-rgb:194,168,120;
+  --accent-ink:#15120b;
+  --good:#9bbf8f;            /* quiet sage — positive delta */
+  --warn:#c08a6a;            /* quiet clay — regression */
+  --gold:#c2a878;
+  --line:rgba(255,255,255,.07);
   --line-2:rgba(255,255,255,.04);
   --track:rgba(255,255,255,.08);
   --hair:rgba(255,255,255,.14);
-  --nav-bg:rgba(10,10,10,.92);
+  --nav-bg:rgba(10,10,11,.92);
   --grid:rgba(255,255,255,.10);
   --step-bg:#000;
-  --step-ink:#f5f5f3;
+  --step-ink:#e9e7e3;
   --sans:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   --num:'Archivo','Inter',sans-serif;
   --display:'Inter',system-ui,sans-serif;
@@ -58,10 +58,12 @@ header{position:relative;max-width:var(--app);margin:0 auto;display:flex;align-i
 .hdr-menu{width:36px;height:36px;flex-shrink:0;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .hdr-menu svg{width:18px;height:18px;}
 .brand-wrap{flex:1;min-width:0;}
-/* ===== EDGR wordmark ===== */
-.brand-logo{display:inline-flex;align-items:center;cursor:pointer;-webkit-user-select:none;user-select:none;line-height:1;font-size:1.85rem;height:30px;}
-.brand-logo .em-part{font-family:'Archivo',var(--sans);font-weight:900;letter-spacing:-.01em;color:var(--ink);text-transform:uppercase;}
-.brand-logo .em-g{font-family:'Archivo',var(--sans);font-weight:900;letter-spacing:-.01em;color:var(--accent);text-transform:uppercase;}
+/* ===== ATHLETE / WEAPON switchable logo ===== */
+.brand-logo{display:inline-flex;align-items:center;cursor:pointer;-webkit-user-select:none;user-select:none;line-height:1;font-size:1.65rem;height:30px;}
+.brand-logo .bl-part{font-family:'Archivo',var(--sans);font-weight:800;font-style:italic;letter-spacing:-.045em;color:var(--ink);transform:skewX(-6deg);text-transform:uppercase;}
+.brand-logo .bl-bolt{display:inline-flex;align-items:center;color:var(--gold);margin:0 -.02em;}
+.brand-logo .bl-bolt svg{width:.6em;height:1.08em;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35));}
+.brand-logo .bl-bolt svg path{fill:currentColor;}
 .brand-logo:active{transform:scale(.97);}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;height:34px;background:var(--panel);flex-shrink:0;}
 .seg button{display:flex;align-items:center;padding:0 13px;font-size:.72rem;font-weight:600;color:var(--faint);background:none;border:none;cursor:pointer;}
@@ -117,8 +119,8 @@ main{max-width:var(--app);margin:0 auto;padding:6px 16px 0;}
 .lastlog{font-size:.84rem;color:var(--muted);margin-top:10px;font-weight:500;}
 .lastlog b{font-family:var(--num);color:var(--ink);font-weight:700;}
 .up,.down{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:99px;margin-left:5px;}
-.up{color:var(--good);background:rgba(61,220,151,.12);}
-.down{color:var(--warn);background:rgba(224,96,58,.12);}
+.up{color:var(--good);background:rgba(155,191,143,.1);}
+.down{color:var(--warn);background:rgba(192,138,106,.1);}
 .flat{color:var(--faint);}
 .pr-star{color:var(--accent);font-weight:700;}
 .chev{color:var(--faint);font-size:.85rem;padding:4px;flex-shrink:0;}
@@ -141,7 +143,7 @@ main{max-width:var(--app);margin:0 auto;padding:6px 16px 0;}
 .logbtn.done .lb-log{opacity:0;transform:scale(.7);}
 .logbtn.done .lb-chk{opacity:1;transform:scale(1);}
 .lb-fill{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(255,255,255,.32),rgba(255,255,255,.05));transform:scaleX(0);transform-origin:left;pointer-events:none;}
-.logbtn.swipe .lb-fill{animation:lbswipe 620ms var(--e-out);}
+.logbtn.swipe .lb-fill{animation:lbswipe 340ms var(--e-out);}
 @keyframes lbswipe{0%{transform:scaleX(0);opacity:1}100%{transform:scaleX(1);opacity:0}}
 .logbtn.is-done svg{animation:chkin 240ms var(--e-out);}
 @keyframes chkin{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
@@ -198,151 +200,16 @@ select.exsel{width:100%;background:var(--panel-2);border:1px solid var(--line);c
 .rec-row .rx-ex{font-weight:600;color:var(--ink);}
 .rec-row .rx-meta{font-size:.78rem;color:var(--faint);}
 
-/* =======================================================================
-   UI / LAYOUT / MOTION PASS — WorkoutTab improvements
-   ======================================================================= */
-
-/* ── Session hero (replaces wk-hero) ── */
-.wk-session-hero{
-  display:flex;align-items:center;gap:16px;
-  background:linear-gradient(150deg,var(--panel),#121212);
-  border:1px solid var(--line);border-radius:20px;
-  padding:15px 16px;margin:0 0 6px;
-  position:relative;overflow:visible;
-}
-.wsh-ring-wrap{
-  position:relative;width:60px;height:60px;flex:none;
-}
-.wsh-ring-label{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--num);font-weight:800;font-size:.92rem;color:var(--ink);
-  pointer-events:none;
-}
-.wsh-info{flex:1;min-width:0;}
-.wsh-vol-row{
-  display:flex;align-items:baseline;gap:5px;position:relative;
-}
-.wsh-num{
-  font-family:var(--num);font-weight:800;font-size:1.9rem;
-  letter-spacing:-.02em;color:var(--ink);line-height:1;
-}
-.wsh-unit{font-size:.74rem;color:var(--muted);font-weight:600;}
-.wsh-track{
-  height:5px;border-radius:99px;background:rgba(255,255,255,.08);
-  margin-top:10px;overflow:hidden;
-}
-.wsh-track i{
-  display:block;height:100%;border-radius:99px;
-  background:var(--accent);
-  transition:width .6s var(--e-out);
-}
-.wsh-remain{font-size:.7rem;color:var(--faint);margin-top:5px;}
-
-/* +XP floater token */
-.xp-floater{
-  position:absolute;left:28px;top:0;
-  font-family:var(--num);font-weight:800;font-size:.9rem;color:var(--accent);
-  animation:floatup .9s var(--e-out) forwards;
-  pointer-events:none;z-index:10;white-space:nowrap;
-}
-@keyframes floatup{
-  0%{opacity:0;transform:translateY(4px) scale(.8)}
-  22%{opacity:1;transform:translateY(-3px) scale(1)}
-  100%{opacity:0;transform:translateY(-32px) scale(1)}
+/* PR flash on .ex card after a personal-record log */
+.ex.pr-flash{animation:prflash 900ms var(--e-out);}
+@keyframes prflash{
+  0%{box-shadow:0 0 0 0 rgba(var(--accent-rgb),.45);border-color:var(--accent);}
+  60%{box-shadow:0 0 0 6px rgba(var(--accent-rgb),0);border-color:var(--accent);}
+  100%{box-shadow:0 0 0 0 rgba(var(--accent-rgb),0);}
 }
 
-/* ── Focused (expanded) card ── */
-.ex.ex-focused{
-  border-color:rgba(var(--accent-rgb),.26);
-  animation:promote .32s var(--e-out);
-}
-@keyframes promote{
-  from{opacity:.35;transform:scale(.975)}
-  to{opacity:1;transform:scale(1)}
-}
-
-/* ── Delta chip (progression cue) ── */
-.ex-delta-chip{
-  display:inline-flex;align-items:center;gap:4px;
-  font-size:.78rem;font-weight:600;border-radius:99px;
-  padding:3px 10px;margin:9px 0 2px;
-}
-.ex-delta-chip.up{color:var(--good);background:rgba(61,220,151,.1);}
-.ex-delta-chip.down{color:var(--warn);background:rgba(224,96,58,.1);}
-.ex-delta-chip.flat{color:var(--muted);background:rgba(255,255,255,.05);}
-
-/* ── Compact (collapsed) card ── */
-.ex-compact{
-  display:flex;align-items:center;gap:11px;
-  background:var(--panel);border:1px solid rgba(255,255,255,.05);
-  border-radius:14px;padding:11px 13px;margin-bottom:10px;
-  cursor:pointer;
-  transition:background var(--t-micro) var(--e-out),
-             border-color var(--t-micro) var(--e-out);
-}
-.ex-compact:active{background:var(--panel-2);}
-.ex-compact:hover{border-color:var(--line);}
-.ex-compact .ex-name{font-size:.92rem;font-weight:600;}
-.ex-compact .ex-target{font-size:.72rem;color:var(--faint);margin-top:2px;}
-.ex-compact .ex-txt{flex:1;min-width:0;overflow:hidden;}
-
-/* inline Log button for compact rows */
-.logbtn-sm{
-  flex:none;border-radius:10px;
-  border:1px solid rgba(var(--accent-rgb),.4);
-  background:none;color:var(--accent);
-  font-family:var(--sans);font-weight:700;font-size:.82rem;
-  padding:7px 16px;cursor:pointer;
-  transition:background var(--t-micro) var(--e-out),
-             transform var(--t-press) var(--e-out);
-}
-.logbtn-sm:active{
-  background:rgba(var(--accent-rgb),.12);
-  transform:scale(.93);
-}
-
-/* ── Done group ── */
-.done-group{margin-top:8px;}
-.done-group-hdr{
-  display:flex;align-items:center;gap:10px;
-  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--faint);font-weight:600;padding:14px 2px 8px;
-}
-.done-group-hdr::after{
-  content:'';flex:1;height:1px;background:var(--line);
-}
-.done-row{
-  display:flex;align-items:center;gap:11px;
-  background:rgba(var(--accent-rgb),.04);
-  border:1px solid rgba(var(--accent-rgb),.12);
-  border-radius:13px;padding:10px 12px;margin-bottom:8px;
-  animation:donein .36s var(--e-out);
-}
-@keyframes donein{
-  from{opacity:0;transform:translateY(-8px)}
-  to{opacity:1;transform:none}
-}
-.done-check{
-  width:26px;height:26px;flex:none;border-radius:50%;
-  background:rgba(var(--accent-rgb),.14);color:var(--accent);
-  display:flex;align-items:center;justify-content:center;
-}
-.done-check svg{width:13px;height:13px;}
-.done-row .ex-txt{flex:1;min-width:0;overflow:hidden;}
-.done-row .ex-name{font-size:.9rem;font-weight:600;color:var(--muted);}
-.done-meta{
-  font-family:var(--num);font-weight:700;font-size:.84rem;
-  color:var(--ink);white-space:nowrap;margin-left:auto;padding-right:4px;
-}
-
-/* @media: reduce-motion collapses celebrations to fades */
 @media(prefers-reduced-motion:reduce){
-  .xp-floater,.ex.logged-anim .ex-wipe,.ex.logged-anim .ex-stamp{
-    animation:none!important;
-  }
-  .done-row{animation:none;}
-  .ex.ex-focused{animation:none;}
-  .wsh-track i{transition:none;}
+  .ex.logged-anim .ex-wipe,.ex.logged-anim .ex-stamp,.ex.pr-flash{animation:none!important;}
 }
 
 /* ===== goals ===== */
@@ -706,7 +573,7 @@ body.dragging-active{-webkit-user-select:none;user-select:none;}
 .toast .toast-act{margin-left:14px;color:var(--accent);font-weight:800;cursor:pointer;border:none;background:none;font-size:.84rem;}
 
 /* light theme */
-body[data-theme="light"]{--page:#f4f2ee;--panel:#fff;--panel-2:#f0ece4;--ink:#1a1814;--muted:#5c5a56;--faint:#8a8884;--line:rgba(0,0,0,.08);--line-2:rgba(0,0,0,.04);--track:rgba(0,0,0,.08);--hair:rgba(0,0,0,.12);--nav-bg:rgba(244,242,238,.94);--step-bg:#fff;--step-ink:#1a1814;}
+body[data-theme="light"]{--page:#ece9e3;--panel:#f6f4ef;--panel-2:#ffffff;--ink:#1b1a17;--muted:#5f5d57;--faint:#8b8881;--line:rgba(0,0,0,.10);--line-2:rgba(0,0,0,.05);--track:rgba(0,0,0,.09);--hair:rgba(0,0,0,.16);--nav-bg:rgba(246,244,239,.92);--grid:rgba(0,0,0,.10);--step-bg:#d4cfc4;--step-ink:#15140f;}
 
 /* report day picker */
 .rep-daypick{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
